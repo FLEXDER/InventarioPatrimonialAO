@@ -76,9 +76,9 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacin
 
 /* ========== NAV ========== */
 .nav{padding:24px 60px;display:flex;gap:8px;flex-wrap:wrap;background:var(--bg2);border-bottom:1px solid var(--bd)}
-.nav-tab{padding:10px 22px;background:transparent;border:1px solid var(--bd);color:var(--tx2);font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:.32em;text-transform:uppercase;cursor:pointer;border-radius:30px;transition:.3s}
-.nav-tab:hover{color:var(--gl);border-color:var(--bd2)}
-.nav-tab.active{background:var(--g);color:var(--bg);border-color:var(--g);font-weight:500}
+.nav-tab{padding:14px 28px;background:transparent;border:1px solid var(--bd);color:var(--tx2);font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;border-radius:30px;transition:.3s;font-weight:400}
+.nav-tab:hover{color:var(--gl);border-color:var(--g);background:rgba(200,164,94,0.04)}
+.nav-tab.active{background:var(--g);color:var(--bg);border-color:var(--g);font-weight:600;box-shadow:0 4px 14px rgba(200,164,94,0.18)}
 
 /* ========== SECTIONS ========== */
 .section{display:none;padding:50px 60px}
@@ -119,8 +119,27 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacin
 .map-legend span{display:flex;align-items:center;gap:6px}
 .map-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--g);box-shadow:0 0 8px rgba(200,164,94,0.6)}
 .map-legend i.active{background:var(--gl);box-shadow:0 0 12px var(--g)}
-.map-stage{position:relative;width:100%;background:linear-gradient(180deg,rgba(20,20,20,0.4),rgba(10,10,10,0.7));border-radius:10px;padding:14px;border:1px solid rgba(200,164,94,0.08)}
-.map-stage svg{width:100%;height:auto;display:block}
+.map-stage{position:relative;width:100%;max-width:780px;margin:0 auto;background:linear-gradient(180deg,rgba(20,20,20,0.4),rgba(10,10,10,0.7));border-radius:10px;padding:12px;border:1px solid rgba(200,164,94,0.08)}
+.map-stage svg{width:100%;height:auto;display:block;max-height:480px}
+
+/* Pin Pad: grid de tarjetas con cada estado para acceso rápido */
+.pin-pad{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;position:relative;z-index:1}
+.pin-pad-card{background:linear-gradient(135deg,rgba(200,164,94,0.04),rgba(200,164,94,0.02));border:1px solid var(--bd);border-radius:10px;padding:16px 18px;cursor:pointer;transition:.3s;position:relative;overflow:hidden}
+.pin-pad-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);opacity:0;transition:.3s}
+.pin-pad-card:hover{border-color:var(--g);background:linear-gradient(135deg,rgba(200,164,94,0.08),rgba(200,164,94,0.04));transform:translateY(-2px)}
+.pin-pad-card:hover::before{opacity:1}
+.pin-pad-card.active{border-color:var(--g);background:linear-gradient(135deg,rgba(200,164,94,0.12),rgba(200,164,94,0.06))}
+.pin-pad-card.active::before{opacity:1}
+.pin-pad-card.usa{border-color:rgba(110,149,184,0.25)}
+.pin-pad-card.usa::before{background:linear-gradient(90deg,transparent,#6e95b8,transparent)}
+.pin-pad-card.usa:hover{border-color:#6e95b8}
+.pin-pad-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
+.pin-pad-state{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gl);font-weight:500;letter-spacing:.04em;line-height:1.1}
+.pin-pad-count{display:flex;align-items:center;justify-content:center;min-width:32px;height:30px;border-radius:15px;background:var(--g);color:var(--bg);font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;padding:0 10px;flex-shrink:0}
+.pin-pad-card.usa .pin-pad-count{background:#6e95b8}
+.pin-pad-meta{font-size:9px;letter-spacing:.28em;color:var(--tx2);text-transform:uppercase;margin-bottom:4px}
+.pin-pad-money{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--g);font-weight:500}
+.pin-pad-money.empty{color:var(--tx2);font-style:italic;font-size:10px;font-family:'Outfit',sans-serif;letter-spacing:.1em;font-weight:400;text-transform:uppercase}
 
 /* Pattern grid in background */
 .map-grid{stroke:rgba(200,164,94,0.05);stroke-width:0.5;fill:none}
@@ -542,6 +561,10 @@ tbody tr{cursor:pointer}
           <span><i class="active"></i>Estado activo</span>
         </div>
       </div>
+
+      <!-- Pin Pad: acceso rápido por estado -->
+      <div class="pin-pad" id="pinPad"></div>
+
       <div class="map-stage" id="mapStage">
         <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -972,8 +995,39 @@ function initDashboard(){
   renderVendidas();
   renderAlertas();
   renderKpiExtras();
+  renderPinPad();
   initMapInteractions();
   renderCharts();
+}
+
+// ========== PIN PAD ESTADOS (acceso rápido) ==========
+function renderPinPad(){
+  const pad = document.getElementById('pinPad');
+  if(!pad) return;
+  // Agrupar y ordenar por # propiedades desc
+  const stats = {};
+  PROPIEDADES.forEach(p => {
+    if(!stats[p.estado]) stats[p.estado] = {count:0, inv:0};
+    stats[p.estado].count++;
+    if(p.costo) stats[p.estado].inv += p.costo;
+  });
+  const ordered = Object.entries(stats).sort((a,b) => b[1].count - a[1].count);
+  pad.innerHTML = ordered.map(([state, s]) => {
+    const isUSA = state === 'USA';
+    const moneyHtml = s.inv > 0
+      ? `<div class="pin-pad-money">$${(s.inv/1000000).toFixed(1)}M</div>`
+      : `<div class="pin-pad-money empty">Sin documentar</div>`;
+    return `
+      <div class="pin-pad-card${isUSA ? ' usa' : ''}" data-state="${state}" onclick="selectState('${state}')">
+        <div class="pin-pad-row">
+          <div class="pin-pad-state">${state}</div>
+          <div class="pin-pad-count">${s.count}</div>
+        </div>
+        <div class="pin-pad-meta">${s.count === 1 ? 'Propiedad' : 'Propiedades'}</div>
+        ${moneyHtml}
+      </div>
+    `;
+  }).join('');
 }
 
 // ========== MAPA INTERACTIVO ==========
@@ -1019,6 +1073,7 @@ function initMapInteractions(){
 
 function selectState(state){
   document.querySelectorAll('.pin-group').forEach(p => p.classList.toggle('active', p.dataset.state === state));
+  document.querySelectorAll('.pin-pad-card').forEach(c => c.classList.toggle('active', c.dataset.state === state));
 
   const props = PROPIEDADES.filter(p => p.estado === state);
   const inv = props.reduce((s, p) => s + (p.costo || 0), 0);
@@ -1066,6 +1121,7 @@ function selectState(state){
 function closeStateDetail(){
   document.getElementById('mapDetail').classList.remove('show');
   document.querySelectorAll('.pin-group').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pin-pad-card').forEach(c => c.classList.remove('active'));
 }
 
 // ========== KPIs EXTRA ==========
