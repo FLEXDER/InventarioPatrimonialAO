@@ -75,10 +75,10 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacin
 @media(max-width:760px){.head-meta{justify-content:space-between;width:100%}.head-meta-text{text-align:left}}
 
 /* ========== NAV ========== */
-.nav{padding:24px 60px;display:flex;gap:8px;flex-wrap:wrap;background:var(--bg2);border-bottom:1px solid var(--bd)}
-.nav-tab{padding:14px 28px;background:transparent;border:1px solid var(--bd);color:var(--tx2);font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;border-radius:30px;transition:.3s;font-weight:400}
-.nav-tab:hover{color:var(--gl);border-color:var(--g);background:rgba(200,164,94,0.04)}
-.nav-tab.active{background:var(--g);color:var(--bg);border-color:var(--g);font-weight:600;box-shadow:0 4px 14px rgba(200,164,94,0.18)}
+.nav{padding:28px 60px;display:flex;gap:12px;flex-wrap:wrap;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.nav-tab{padding:18px 38px;background:transparent;border:1px solid var(--bd);color:var(--tx2);font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;border-radius:32px;transition:.3s;font-weight:400}
+.nav-tab:hover{color:var(--gl);border-color:var(--g);background:rgba(200,164,94,0.06)}
+.nav-tab.active{background:var(--g);color:var(--bg);border-color:var(--g);font-weight:600;box-shadow:0 6px 18px rgba(200,164,94,0.22)}
 
 /* ========== SECTIONS ========== */
 .section{display:none;padding:50px 60px}
@@ -508,6 +508,13 @@ tbody tr{cursor:pointer}
         <div class="kpi-value pos" id="kpiPlus">—</div>
         <div class="kpi-detail">Valor estimado vs inversión</div>
       </div>
+    </div>
+
+    <!-- ========== PIN PAD AL INICIO: Acceso rápido por estado ========== -->
+    <div class="panel" style="margin-bottom:32px">
+      <h3 class="panel-title">Acceso Rápido · Distribución por Estado</h3>
+      <p class="panel-sub">Click en cualquier estado para ver detalle completo y propiedades</p>
+      <div class="pin-pad" id="pinPadResumen"></div>
     </div>
 
     <div class="two-col">
@@ -1002,8 +1009,6 @@ function initDashboard(){
 
 // ========== PIN PAD ESTADOS (acceso rápido) ==========
 function renderPinPad(){
-  const pad = document.getElementById('pinPad');
-  if(!pad) return;
   // Agrupar y ordenar por # propiedades desc
   const stats = {};
   PROPIEDADES.forEach(p => {
@@ -1012,22 +1017,44 @@ function renderPinPad(){
     if(p.costo) stats[p.estado].inv += p.costo;
   });
   const ordered = Object.entries(stats).sort((a,b) => b[1].count - a[1].count);
-  pad.innerHTML = ordered.map(([state, s]) => {
-    const isUSA = state === 'USA';
-    const moneyHtml = s.inv > 0
-      ? `<div class="pin-pad-money">$${(s.inv/1000000).toFixed(1)}M</div>`
-      : `<div class="pin-pad-money empty">Sin documentar</div>`;
-    return `
-      <div class="pin-pad-card${isUSA ? ' usa' : ''}" data-state="${state}" onclick="selectState('${state}')">
-        <div class="pin-pad-row">
-          <div class="pin-pad-state">${state}</div>
-          <div class="pin-pad-count">${s.count}</div>
-        </div>
-        <div class="pin-pad-meta">${s.count === 1 ? 'Propiedad' : 'Propiedades'}</div>
-        ${moneyHtml}
+
+  // Generar HTML para cada contenedor
+  // Resumen General: navigateToState (cambia de tab)
+  const resumenHtml = ordered.map(([state, s]) => buildCard(state, s, 'navigateToState')).join('');
+  // Por Estado: selectState (ya está en la tab)
+  const estadosHtml = ordered.map(([state, s]) => buildCard(state, s, 'selectState')).join('');
+
+  const padResumen = document.getElementById('pinPadResumen');
+  if(padResumen) padResumen.innerHTML = resumenHtml;
+  const padEstados = document.getElementById('pinPad');
+  if(padEstados) padEstados.innerHTML = estadosHtml;
+}
+
+function buildCard(state, s, fn){
+  const isUSA = state === 'USA';
+  const moneyHtml = s.inv > 0
+    ? `<div class="pin-pad-money">$${(s.inv/1000000).toFixed(1)}M</div>`
+    : `<div class="pin-pad-money empty">Sin documentar</div>`;
+  return `
+    <div class="pin-pad-card${isUSA ? ' usa' : ''}" data-state="${state}" onclick="${fn}('${state}')">
+      <div class="pin-pad-row">
+        <div class="pin-pad-state">${state}</div>
+        <div class="pin-pad-count">${s.count}</div>
       </div>
-    `;
-  }).join('');
+      <div class="pin-pad-meta">${s.count === 1 ? 'Propiedad' : 'Propiedades'}</div>
+      ${moneyHtml}
+    </div>
+  `;
+}
+
+// Navegar al tab "Por Estado" Y seleccionar el estado
+function navigateToState(state){
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-tab="estados"]').classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-estados').classList.add('active');
+  window.scrollTo({top: 0, behavior:'instant'});
+  setTimeout(() => selectState(state), 80);
 }
 
 // ========== MAPA INTERACTIVO ==========
