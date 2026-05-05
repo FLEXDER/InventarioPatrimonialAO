@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AO · Inventario Patrimonial · Agosto 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111111;
+  --tx:#e8e3d8;
+  --tx2:#9a9486;
+  --g:#c8a45e;
+  --gl:#e0c188;
+  --gd:#8b6f3d;
+  --cd:#161616;
+  --cd2:#1c1c1c;
+  --bd:rgba(200,164,94,0.18);
+  --bd2:rgba(200,164,94,0.32);
+  --sb:rgba(0,0,0,0.6);
+  --rd:#d97766;
+  --gr:#7da882;
+  --bl:#6e95b8;
+  --pk:#c389a8;
+  --or:#d99466;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:.01em;min-height:100vh;overflow-x:hidden}
+body{background:
+  radial-gradient(ellipse at top left, rgba(200,164,94,0.06), transparent 50%),
+  radial-gradient(ellipse at bottom right, rgba(200,164,94,0.04), transparent 60%),
+  var(--bg);
+}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:.02em}
+
+/* ========== LOGIN ========== */
+.login{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:40px}
+.login.hidden{display:none}
+.login::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(200,164,94,0.08),transparent 60%);pointer-events:none}
+.login-logo{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--gd));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--bg);font-weight:600;letter-spacing:-1px;box-shadow:0 0 60px rgba(200,164,94,0.3);position:relative;z-index:1}
+.login-titles{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1;text-align:center;padding:0 20px;max-width:100%}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;letter-spacing:.32em;color:var(--g);text-transform:uppercase;line-height:1;white-space:nowrap}
+.login-sub{font-size:10px;letter-spacing:.5em;color:var(--tx2);text-transform:uppercase;line-height:1}
+@media(max-width:600px){.login-title{font-size:24px;letter-spacing:.2em;white-space:normal}}
+.pin-input{display:flex;gap:14px;position:relative;z-index:1}
+.pin-input input{width:54px;height:64px;background:var(--cd);border:1px solid var(--bd);color:var(--g);font-family:'Cormorant Garamond',serif;font-size:32px;text-align:center;border-radius:6px;outline:none;transition:.3s}
+.pin-input input:focus{border-color:var(--g);box-shadow:0 0 20px rgba(200,164,94,0.15)}
+.login-btn{padding:14px 60px;background:transparent;border:1px solid var(--g);color:var(--g);font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:.4em;text-transform:uppercase;cursor:pointer;transition:.3s;position:relative;z-index:1}
+.login-btn:hover{background:var(--g);color:var(--bg)}
+.login-error{color:var(--rd);font-size:11px;letter-spacing:.3em;text-transform:uppercase;height:14px;position:relative;z-index:1}
+.login-foot{position:absolute;bottom:30px;font-size:10px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;z-index:1}
+
+/* ========== HEADER ========== */
+.dash{display:none;padding:0}
+.dash.active{display:block}
+.header{padding:50px 60px 30px;border-bottom:1px solid var(--bd);position:relative}
+.header::after{content:'';position:absolute;left:60px;bottom:-1px;width:80px;height:2px;background:linear-gradient(90deg,var(--g),transparent)}
+.head-row{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
+@media(max-width:760px){.head-row{grid-template-columns:1fr;gap:20px}}
+.brand{display:flex;align-items:center;gap:22px}
+.brand-logo{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--gd));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--bg);font-weight:600;letter-spacing:-1px;box-shadow:0 4px 30px rgba(200,164,94,0.18);flex-shrink:0}
+.brand-text h1{font-size:30px;color:var(--g);letter-spacing:.35em;text-transform:uppercase;font-weight:300;line-height:1.1}
+.brand-text p{font-size:10px;letter-spacing:.45em;color:var(--tx2);text-transform:uppercase;margin-top:6px}
+.head-meta{display:flex;align-items:center;gap:18px}
+.head-meta-text{text-align:right}
+.head-meta .stamp{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--g);font-style:italic;line-height:1.2}
+.head-meta .date{font-size:10px;letter-spacing:.35em;color:var(--tx2);text-transform:uppercase;margin-top:4px}
+.btn-print{padding:10px 16px;background:transparent;border:1px solid var(--bd2);color:var(--g);font-family:'Outfit';font-size:9px;letter-spacing:.3em;text-transform:uppercase;border-radius:30px;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:8px}
+.btn-print:hover{border-color:var(--g);background:rgba(200,164,94,0.06)}
+.btn-print svg{width:12px;height:12px;fill:currentColor}
+@media(max-width:760px){.head-meta{justify-content:space-between;width:100%}.head-meta-text{text-align:left}}
+
+/* ========== NAV ========== */
+.nav{padding:24px 60px;display:flex;gap:8px;flex-wrap:wrap;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.nav-tab{padding:10px 22px;background:transparent;border:1px solid var(--bd);color:var(--tx2);font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:.32em;text-transform:uppercase;cursor:pointer;border-radius:30px;transition:.3s}
+.nav-tab:hover{color:var(--gl);border-color:var(--bd2)}
+.nav-tab.active{background:var(--g);color:var(--bg);border-color:var(--g);font-weight:500}
+
+/* ========== SECTIONS ========== */
+.section{display:none;padding:50px 60px}
+.section.active{display:block}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--g);letter-spacing:.08em;font-weight:300;margin-bottom:6px}
+.section-sub{font-size:11px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;margin-bottom:36px}
+
+/* ========== KPI CARDS ========== */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:40px}
+.kpi{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:28px 26px;position:relative;overflow:hidden;transition:.4s}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent)}
+.kpi:hover{border-color:var(--bd2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.kpi-label{font-size:9px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;margin-bottom:12px}
+.kpi-value{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--g);font-weight:400;line-height:1;letter-spacing:.01em}
+.kpi-value .small{font-size:18px;color:var(--gl);margin-left:4px}
+.kpi-detail{font-size:10px;letter-spacing:.2em;color:var(--tx2);margin-top:10px;text-transform:uppercase}
+.kpi-detail .pos{color:var(--gr)}
+.kpi-detail .neg{color:var(--rd)}
+
+/* ========== GRID 2-COL ========== */
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;margin-bottom:40px}
+.two-col-equal{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px}
+@media(max-width:980px){.two-col,.two-col-equal{grid-template-columns:1fr}}
+.panel{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:28px 30px;position:relative}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent)}
+.panel-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--g);letter-spacing:.06em;margin-bottom:6px;font-weight:400}
+.panel-sub{font-size:10px;letter-spacing:.3em;color:var(--tx2);text-transform:uppercase;margin-bottom:22px}
+
+/* ========== MAPA INTERACTIVO ========== */
+.map-wrap{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:30px;margin-bottom:32px;position:relative;overflow:hidden}
+.map-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent)}
+.map-wrap::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(200,164,94,0.04),transparent 65%);pointer-events:none}
+.map-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:20px;flex-wrap:wrap;position:relative;z-index:1}
+.map-head-text{flex:1;min-width:240px}
+.map-head h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--g);letter-spacing:.06em;font-weight:400;margin-bottom:4px}
+.map-head p{font-size:10px;letter-spacing:.32em;color:var(--tx2);text-transform:uppercase}
+.map-legend{display:flex;gap:14px;align-items:center;font-size:9px;letter-spacing:.25em;color:var(--tx2);text-transform:uppercase}
+.map-legend span{display:flex;align-items:center;gap:6px}
+.map-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--g);box-shadow:0 0 8px rgba(200,164,94,0.6)}
+.map-legend i.active{background:var(--gl);box-shadow:0 0 12px var(--g)}
+.map-stage{position:relative;width:100%;background:linear-gradient(180deg,rgba(20,20,20,0.4),rgba(10,10,10,0.7));border-radius:10px;padding:14px;border:1px solid rgba(200,164,94,0.08)}
+.map-stage svg{width:100%;height:auto;display:block}
+
+/* Pattern grid in background */
+.map-grid{stroke:rgba(200,164,94,0.05);stroke-width:0.5;fill:none}
+
+/* Country outlines */
+.mx-land{fill:rgba(200,164,94,0.06);stroke:var(--bd2);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;transition:.4s}
+.mx-land:hover{fill:rgba(200,164,94,0.09)}
+.usa-box{fill:rgba(110,149,184,0.04);stroke:rgba(110,149,184,0.3);stroke-width:1;stroke-dasharray:4,3}
+.usa-label{fill:#6e95b8;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:.4em;text-transform:uppercase;font-weight:500}
+.usa-sub{fill:#9a9486;font-family:'Outfit',sans-serif;font-size:9px;letter-spacing:.3em;text-transform:uppercase}
+
+/* State labels */
+.state-label{fill:rgba(200,164,94,0.55);font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;text-anchor:middle;font-weight:500;pointer-events:none;transition:.3s}
+.pin-group:hover ~ .state-label,.pin-group.active .state-label{fill:var(--gl)}
+
+/* Pin styles */
+.pin-group{cursor:pointer}
+.pin-pulse{fill:var(--g);opacity:0;animation:pinPulse 2.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pinPulse{
+  0%{opacity:.5;r:8}
+  100%{opacity:0;r:24}
+}
+.pin-ring{fill:rgba(200,164,94,0.18);stroke:var(--g);stroke-width:1.5;transition:fill .25s,stroke .25s}
+.pin-dot{fill:var(--g);stroke:var(--bg);stroke-width:2;transition:fill .25s,filter .25s;filter:drop-shadow(0 0 6px rgba(200,164,94,0.5))}
+.pin-count{fill:var(--bg);font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.pin-name{fill:var(--gl);font-family:'Outfit',sans-serif;font-size:9px;letter-spacing:.3em;text-transform:uppercase;text-anchor:middle;pointer-events:none;font-weight:500}
+
+.pin-group:hover .pin-dot{fill:var(--gl);filter:drop-shadow(0 0 14px var(--gl))}
+.pin-group:hover .pin-ring{fill:rgba(224,193,136,0.32);stroke:var(--gl)}
+.pin-group.active .pin-dot{fill:var(--gl);filter:drop-shadow(0 0 18px var(--gl))}
+.pin-group.active .pin-ring{fill:rgba(224,193,136,0.4);stroke:var(--gl);stroke-width:2.2}
+.pin-group.active .pin-pulse{animation-duration:1.4s;opacity:.7}
+
+/* Tooltip */
+.map-tooltip{position:absolute;background:rgba(10,10,10,0.95);border:1px solid var(--bd2);border-radius:8px;padding:14px 18px;pointer-events:none;opacity:0;transition:.2s;z-index:10;backdrop-filter:blur(8px);min-width:180px}
+.map-tooltip.show{opacity:1}
+.map-tooltip .tt-name{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--g);font-weight:500;margin-bottom:4px}
+.map-tooltip .tt-meta{font-size:9px;letter-spacing:.32em;color:var(--tx2);text-transform:uppercase;margin-bottom:10px}
+.map-tooltip .tt-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;color:var(--tx)}
+.map-tooltip .tt-row span:last-child{color:var(--gl);font-family:'Cormorant Garamond';font-size:13px}
+.map-tooltip .tt-foot{margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);font-size:9px;letter-spacing:.25em;color:var(--g);text-transform:uppercase;text-align:center;font-style:italic;font-family:'Cormorant Garamond';font-weight:500}
+
+/* Detail panel below map */
+.map-detail{margin-top:24px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:0;overflow:hidden;display:none;position:relative}
+.map-detail.show{display:block;animation:slideIn .4s ease}
+.map-detail::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.map-detail-head{padding:24px 28px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.map-detail-name{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--g);letter-spacing:.04em;font-weight:400;line-height:1}
+.map-detail-region{font-size:10px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;margin-top:4px}
+.map-close{width:34px;height:34px;border-radius:50%;background:transparent;border:1px solid var(--bd);color:var(--g);font-size:18px;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center}
+.map-close:hover{background:var(--g);color:var(--bg);border-color:var(--g)}
+.map-detail-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;border-bottom:1px solid var(--bd)}
+.mds{padding:18px 22px;border-right:1px solid var(--bd);text-align:center}
+.mds:last-child{border-right:none}
+.mds .lab{font-size:9px;letter-spacing:.32em;color:var(--tx2);text-transform:uppercase;margin-bottom:6px}
+.mds .val{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--g);font-weight:400}
+.map-detail-list{padding:18px 28px 26px}
+.mdl-title{font-size:9px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;margin-bottom:12px}
+.mdl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.mdl-item{padding:14px 16px;background:var(--cd2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:.3s;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.mdl-item:hover{border-color:var(--g);background:rgba(200,164,94,0.05);transform:translateX(2px)}
+.mdl-item-name{font-size:12px;color:var(--gl);font-weight:400;line-height:1.3}
+.mdl-item-meta{font-size:9px;letter-spacing:.2em;color:var(--tx2);text-transform:uppercase;margin-top:3px}
+.mdl-item-money{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--g);white-space:nowrap}
+
+/* User badge in header */
+.user-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.3em;color:var(--gl);text-transform:uppercase;padding:5px 10px;border:1px solid rgba(200,164,94,0.2);border-radius:20px;background:rgba(200,164,94,0.04)}
+.user-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gr)}
+.estado-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}
+.estado-card{background:var(--cd2);border:1px solid var(--bd);border-radius:10px;padding:20px 18px;transition:.3s;cursor:default;position:relative;overflow:hidden}
+.estado-card:hover{border-color:var(--g);transform:translateY(-2px)}
+.estado-card .est-flag{position:absolute;top:0;right:0;width:40px;height:40px;background:linear-gradient(135deg,var(--g),transparent);clip-path:polygon(0 0,100% 0,100% 100%);opacity:.18}
+.estado-card .est-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gl);margin-bottom:4px;font-weight:500}
+.estado-card .est-region{font-size:9px;letter-spacing:.3em;color:var(--tx2);text-transform:uppercase;margin-bottom:14px}
+.estado-card .est-count{font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--g);line-height:1;font-weight:300}
+.estado-card .est-label{font-size:9px;letter-spacing:.3em;color:var(--tx2);text-transform:uppercase;margin-top:4px}
+.estado-card .est-bar{margin-top:14px;height:3px;background:rgba(200,164,94,0.1);border-radius:2px;overflow:hidden}
+.estado-card .est-bar-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:2px}
+.estado-card .est-monto{font-size:11px;color:var(--tx2);margin-top:10px;font-family:'Outfit';letter-spacing:.05em}
+.estado-card .est-monto strong{color:var(--gl);font-weight:400}
+
+/* ========== PROPIETARIOS ========== */
+.prop-list{display:flex;flex-direction:column;gap:10px}
+.prop-item{display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;padding:14px 18px;background:var(--cd2);border:1px solid var(--bd);border-radius:8px;transition:.3s}
+.prop-item:hover{border-color:var(--bd2);background:rgba(200,164,94,0.04)}
+.prop-name{font-size:13px;color:var(--tx);letter-spacing:.02em}
+.prop-name .tag{display:inline-block;background:rgba(200,164,94,0.12);color:var(--gl);padding:2px 8px;border-radius:3px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-left:8px;font-weight:400}
+.prop-name .tag.persona{background:rgba(110,149,184,0.12);color:var(--bl)}
+.prop-name .tag.empresa{background:rgba(125,168,130,0.12);color:var(--gr)}
+.prop-name .tag.mixto{background:rgba(195,137,168,0.12);color:var(--pk)}
+.prop-count{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--g);font-weight:400;min-width:36px;text-align:right}
+.prop-monto{font-size:11px;color:var(--tx2);min-width:120px;text-align:right;letter-spacing:.04em}
+.prop-monto strong{color:var(--gl);font-weight:400}
+
+/* ========== TABLA ========== */
+.filters{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.filters input,.filters select{background:var(--cd);border:1px solid var(--bd);color:var(--tx);padding:9px 14px;border-radius:6px;font-family:'Outfit';font-size:11px;letter-spacing:.05em;outline:none;transition:.3s}
+.filters input:focus,.filters select:focus{border-color:var(--g)}
+.filters input{min-width:240px}
+.filters .label{font-size:9px;letter-spacing:.3em;color:var(--tx2);text-transform:uppercase;margin-right:6px}
+
+.table-wrap{background:var(--cd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;position:relative}
+.table-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);z-index:1}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead{background:var(--cd2)}
+th{text-align:left;padding:16px 14px;font-size:9px;letter-spacing:.3em;color:var(--g);text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--bd)}
+td{padding:14px;border-bottom:1px solid rgba(200,164,94,0.06);color:var(--tx);font-weight:300;vertical-align:top}
+tbody tr{transition:.2s}
+tbody tr:hover{background:rgba(200,164,94,0.03)}
+.td-num{font-family:'Cormorant Garamond',serif;color:var(--g);font-size:14px}
+.td-name{color:var(--gl);font-weight:400}
+.td-money{color:var(--g);font-weight:400;white-space:nowrap}
+.badge{display:inline-block;padding:3px 9px;border-radius:3px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:400}
+.badge.activa{background:rgba(125,168,130,0.14);color:var(--gr)}
+.badge.vendida{background:rgba(110,149,184,0.14);color:var(--bl)}
+.badge.pendiente{background:rgba(217,148,102,0.14);color:var(--or)}
+.badge.sininfo{background:rgba(217,119,102,0.14);color:var(--rd)}
+.badge.regalo{background:rgba(195,137,168,0.14);color:var(--pk)}
+.badge.escrit{background:rgba(125,168,130,0.14);color:var(--gr)}
+.badge.copia{background:rgba(217,148,102,0.14);color:var(--or)}
+.badge.no-doc{background:rgba(217,119,102,0.14);color:var(--rd)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* ========== CHARTS ========== */
+.chart-wrap{position:relative;height:280px}
+
+/* ========== ALERTAS ========== */
+.alert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.alert-card{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:22px;border-left:3px solid var(--rd);transition:.3s}
+.alert-card:hover{transform:translateX(3px)}
+.alert-card.warn{border-left-color:var(--or)}
+.alert-card.info{border-left-color:var(--bl)}
+.alert-card.ok{border-left-color:var(--gr)}
+.alert-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gl);margin-bottom:6px;font-weight:500}
+.alert-meta{font-size:9px;letter-spacing:.3em;color:var(--tx2);text-transform:uppercase;margin-bottom:10px}
+.alert-body{font-size:12px;color:var(--tx2);line-height:1.6}
+.alert-body strong{color:var(--tx);font-weight:400}
+
+/* ========== VENDIDAS ========== */
+.sold-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.sold-card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;position:relative}
+.sold-card::before{content:'VENDIDA';position:absolute;top:14px;right:14px;font-size:9px;letter-spacing:.4em;color:var(--bl);background:rgba(110,149,184,0.14);padding:4px 10px;border-radius:3px}
+.sold-card-head{padding:24px 26px 16px;border-bottom:1px solid var(--bd)}
+.sold-card-name{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gl);margin-bottom:4px;font-weight:500}
+.sold-card-loc{font-size:10px;letter-spacing:.32em;color:var(--tx2);text-transform:uppercase}
+.sold-card-body{padding:22px 26px}
+.sold-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(200,164,94,0.1)}
+.sold-row:last-child{border-bottom:none}
+.sold-row .lab{font-size:10px;letter-spacing:.25em;color:var(--tx2);text-transform:uppercase}
+.sold-row .val{font-size:13px;color:var(--tx);font-family:'Cormorant Garamond',serif}
+.sold-row .val.money{color:var(--g);font-size:18px}
+.sold-row .val.gain{color:var(--gr)}
+.sold-row .val.loss{color:var(--rd)}
+
+/* ========== FOOTER ========== */
+.footer{padding:50px 60px 40px;border-top:1px solid var(--bd);margin-top:60px;position:relative}
+.footer-line{width:80px;height:1px;background:var(--g);margin:0 auto 24px}
+.footer-content{text-align:center;margin-bottom:36px}
+.footer-text{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--g);font-size:14px;letter-spacing:.05em}
+.footer-meta{font-size:10px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;margin-top:8px}
+.footer-flex{display:flex;align-items:center;justify-content:center;gap:14px;padding-top:30px;border-top:1px solid rgba(200,164,94,0.08)}
+.flex-mark{width:38px;height:38px;border-radius:50%;border:1px solid var(--g);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--g);letter-spacing:-1px;font-weight:500}
+.flex-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--g);letter-spacing:.08em;line-height:1.1}
+.flex-tag{font-size:9px;letter-spacing:.42em;color:var(--tx2);text-transform:uppercase;margin-top:4px}
+
+/* ========== MODAL FICHA TÉCNICA ========== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:1000;display:none;align-items:center;justify-content:center;padding:30px;animation:fadeIn .3s ease}
+.modal-overlay.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--cd);border:1px solid var(--bd2);border-radius:14px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:slideUp .4s ease}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--g),transparent);border-radius:14px 14px 0 0}
+.modal-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;background:transparent;border:1px solid var(--bd);color:var(--g);font-size:20px;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;z-index:2}
+.modal-close:hover{background:var(--g);color:var(--bg);border-color:var(--g)}
+.modal-head{padding:36px 40px 24px;border-bottom:1px solid var(--bd)}
+.modal-num{font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--tx2);letter-spacing:.4em;text-transform:uppercase;margin-bottom:8px}
+.modal-name{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--g);letter-spacing:.04em;font-weight:400;margin-bottom:6px;line-height:1.15}
+.modal-loc{font-size:11px;letter-spacing:.32em;color:var(--gl);text-transform:uppercase}
+.modal-body{padding:30px 40px}
+.modal-section{margin-bottom:30px}
+.modal-section:last-child{margin-bottom:0}
+.modal-section-title{font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--g);letter-spacing:.45em;text-transform:uppercase;font-weight:500;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(200,164,94,0.12)}
+.modal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.modal-field{}
+.modal-label{font-size:9px;letter-spacing:.35em;color:var(--tx2);text-transform:uppercase;margin-bottom:6px}
+.modal-value{font-size:14px;color:var(--tx);font-weight:300;line-height:1.5}
+.modal-value.money{font-family:'Cormorant Garamond',serif;color:var(--g);font-size:22px;font-weight:400}
+.modal-value.gain{color:var(--gr)}
+.modal-obs{background:var(--cd2);border:1px solid var(--bd);border-radius:8px;padding:18px 20px;font-size:13px;color:var(--tx2);line-height:1.7;font-style:italic}
+
+/* Score Bar */
+.score-wrap{display:flex;align-items:center;gap:20px;background:var(--cd2);padding:20px 24px;border-radius:10px;border:1px solid var(--bd)}
+.score-circle{position:relative;width:90px;height:90px;flex-shrink:0}
+.score-circle svg{width:100%;height:100%;transform:rotate(-90deg)}
+.score-circle circle{fill:none;stroke-width:6}
+.score-circle .bg{stroke:rgba(200,164,94,0.1)}
+.score-circle .fg{stroke:var(--g);stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--g);font-weight:500}
+.score-detail{flex:1}
+.score-detail .lab{font-size:9px;letter-spacing:.35em;color:var(--tx2);text-transform:uppercase;margin-bottom:4px}
+.score-detail .ttl{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gl);font-weight:400;margin-bottom:6px}
+.score-detail .desc{font-size:11px;color:var(--tx2);line-height:1.5}
+.score-low .fg{stroke:var(--rd)}
+.score-low .score-num{color:var(--rd)}
+.score-mid .fg{stroke:var(--or)}
+.score-mid .score-num{color:var(--or)}
+
+tbody tr{cursor:pointer}
+
+/* ========== PLUSVALÍA ========== */
+.plus-hero{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-bottom:32px}
+@media(max-width:900px){.plus-hero{grid-template-columns:1fr}}
+.plus-card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:32px;position:relative;overflow:hidden}
+.plus-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent)}
+.plus-big{font-family:'Cormorant Garamond',serif;font-size:72px;color:var(--g);font-weight:300;line-height:1;letter-spacing:-.02em}
+.plus-big .small{font-size:32px;color:var(--gl)}
+.plus-big.gr{color:var(--gr)}
+.plus-label{font-size:10px;letter-spacing:.4em;color:var(--tx2);text-transform:uppercase;margin-bottom:14px}
+.plus-detail{font-size:13px;color:var(--tx);line-height:1.7;margin-top:18px;padding-top:18px;border-top:1px solid var(--bd)}
+.plus-detail strong{color:var(--gl);font-weight:400}
+.plus-comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.plus-comp{background:var(--cd2);border:1px solid var(--bd);border-radius:8px;padding:18px;text-align:center}
+.plus-comp .ttl{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gl);margin-bottom:10px;font-weight:500}
+.plus-comp .va{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--g);font-weight:400}
+.plus-comp .ar{font-size:18px;color:var(--gr);margin:6px 0}
+.plus-comp .vb{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gl);font-weight:400}
+.plus-comp .delta{font-size:11px;color:var(--gr);letter-spacing:.2em;text-transform:uppercase;margin-top:8px;font-weight:500}
+
+/* ========== PRINT ========== */
+@media print{
+  body{background:white;color:#222}
+  .login,.nav,.btn-print,.modal-overlay{display:none !important}
+  .dash{display:block !important}
+  .section{display:block !important;page-break-after:always;padding:20px}
+  .header{padding:20px}
+  .panel,.kpi,.estado-card{background:white !important;border:1px solid #ccc !important;break-inside:avoid}
+  .kpi-value,.brand-text h1,.section-title,.modal-name,.plus-big,.score-num{color:#8b6f3d !important}
+  table{font-size:10px}
+}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:768px){
+  .header,.nav,.section,.footer{padding-left:24px;padding-right:24px}
+  .head-row{flex-direction:column;align-items:flex-start}
+  .head-meta{text-align:left}
+  .brand-text h1{font-size:22px}
+  .login-title{font-size:28px}
+  .pin-input input{width:42px;height:54px;font-size:24px}
+  th,td{padding:10px 8px;font-size:10px}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:var(--g)}
+</style>
+</head>
+<body>
+
+<!-- ========== LOGIN ========== -->
+<div class="login" id="login">
+  <div class="login-logo">AO</div>
+  <div class="login-titles">
+    <div class="login-title">Inventario Patrimonial</div>
+    <div class="login-sub">Acceso Confidencial</div>
+  </div>
+  <div class="pin-input">
+    <input type="password" maxlength="1" id="p1">
+    <input type="password" maxlength="1" id="p2">
+    <input type="password" maxlength="1" id="p3">
+    <input type="password" maxlength="1" id="p4">
+  </div>
+  <div class="login-error" id="loginError"></div>
+  <button class="login-btn" onclick="checkPin()">Ingresar</button>
+  <div class="login-foot">
+    <div style="margin-bottom:14px">Datos hasta agosto 2025</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;opacity:.6">
+      <span style="width:24px;height:24px;border-radius:50%;border:1px solid var(--g);display:inline-flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:9px;color:var(--g);letter-spacing:-1px">FX</span>
+      <span style="letter-spacing:.4em">Flexder Corporativo</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DASHBOARD ========== -->
+<div class="dash" id="dash">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="head-row">
+      <div class="brand">
+        <div class="brand-logo">AO</div>
+        <div class="brand-text">
+          <h1>Inventario Patrimonial</h1>
+          <p>Bienes Inmuebles · Confidencial</p>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="head-meta-text">
+          <div class="stamp">Reporte ejecutivo</div>
+          <div class="date" id="userBadge">Corte · agosto 2025</div>
+        </div>
+        <button class="btn-print" onclick="window.print()" title="Imprimir / Exportar PDF">
+          <svg viewBox="0 0 24 24"><path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 14H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+          Imprimir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-tab active" data-tab="resumen">Resumen General</button>
+    <button class="nav-tab" data-tab="estados">Por Estado</button>
+    <button class="nav-tab" data-tab="propietarios">Por Propietario</button>
+    <button class="nav-tab" data-tab="plusvalia">Plusvalía</button>
+    <button class="nav-tab" data-tab="inventario">Inventario Maestro</button>
+    <button class="nav-tab" data-tab="vendidas">Vendidas</button>
+    <button class="nav-tab" data-tab="alertas">Pendientes & Alertas</button>
+  </nav>
+
+  <!-- ========== RESUMEN ========== -->
+  <section class="section active" id="sec-resumen">
+    <h2 class="section-title">Resumen General</h2>
+    <p class="section-sub">Indicadores Patrimoniales</p>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Total propiedades</div>
+        <div class="kpi-value">26</div>
+        <div class="kpi-detail" id="kpiTotalDetail">Activas <span class="pos">11</span> · Pendientes <span>12</span> · Vendidas <span>3</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Inversión documentada</div>
+        <div class="kpi-value" id="kpiInversion">— <span class="small">M</span></div>
+        <div class="kpi-detail" id="kpiInversionDetail">— propiedades con monto registrado</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Avalúos vigentes</div>
+        <div class="kpi-value">$143.61 <span class="small">M</span></div>
+        <div class="kpi-detail">2 propiedades · jul–ago 2025</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Estados con presencia</div>
+        <div class="kpi-value">6</div>
+        <div class="kpi-detail">MX: Jal · Nay · Mich · Sin · Son · USA</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Ingresos por ventas</div>
+        <div class="kpi-value">$32.0 <span class="small">M</span></div>
+        <div class="kpi-detail">Aplicados a abonos / Tigres III</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Sin información</div>
+        <div class="kpi-value">9</div>
+        <div class="kpi-detail">Documentación o costo pendiente</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Salud documental</div>
+        <div class="kpi-value" id="kpiScore">—</div>
+        <div class="kpi-detail">Promedio del portafolio · /100</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Plusvalía proyectada</div>
+        <div class="kpi-value pos" id="kpiPlus">—</div>
+        <div class="kpi-detail">Valor estimado vs inversión</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3 class="panel-title">Distribución de Inversión por Región</h3>
+        <p class="panel-sub">Monto documentado en MXN</p>
+        <div class="chart-wrap">
+          <canvas id="chartRegion"></canvas>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Estatus de Documentación</h3>
+        <p class="panel-sub">Sobre 26 propiedades</p>
+        <div class="chart-wrap">
+          <canvas id="chartDocs"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col-equal">
+      <div class="panel">
+        <h3 class="panel-title">Top Propiedades por Inversión</h3>
+        <p class="panel-sub">Top 8 · monto documentado</p>
+        <div class="chart-wrap" style="height:340px">
+          <canvas id="chartTop"></canvas>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Concentración por Propietario</h3>
+        <p class="panel-sub">Número de propiedades registradas</p>
+        <div class="chart-wrap" style="height:340px">
+          <canvas id="chartOwners"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ESTADOS ========== -->
+  <section class="section" id="sec-estados">
+    <h2 class="section-title">Distribución Geográfica</h2>
+    <p class="section-sub">Mapa interactivo · click en pin para detalle</p>
+
+    <div class="map-wrap">
+      <div class="map-head">
+        <div class="map-head-text">
+          <h3>Portafolio Patrimonial · Vista Cartográfica</h3>
+          <p>26 propiedades · 6 entidades</p>
+        </div>
+        <div class="map-legend">
+          <span><i></i>Concentración</span>
+          <span><i class="active"></i>Estado activo</span>
+        </div>
+      </div>
+      <div class="map-stage" id="mapStage">
+        <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="mapGrid" width="22" height="22" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.6" fill="rgba(200,164,94,0.08)"/>
+            </pattern>
+            <radialGradient id="mexGlow" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stop-color="rgba(200,164,94,0.05)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+            <linearGradient id="landFill" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(139,111,61,0.35)"/>
+              <stop offset="100%" stop-color="rgba(200,164,94,0.18)"/>
+            </linearGradient>
+          </defs>
+          <rect width="1000" height="600" fill="url(#mapGrid)"/>
+          <rect width="1000" height="600" fill="url(#mexGlow)"/>
+
+          <!-- Decorative corner ornaments -->
+          <g class="corner-deco" fill="rgba(200,164,94,0.35)">
+            <g transform="translate(28, 28)"><path d="M 0 -7 L 2 -2 L 7 0 L 2 2 L 0 7 L -2 2 L -7 0 L -2 -2 Z"/></g>
+            <g transform="translate(972, 28)"><path d="M 0 -7 L 2 -2 L 7 0 L 2 2 L 0 7 L -2 2 L -7 0 L -2 -2 Z"/></g>
+            <g transform="translate(28, 572)"><path d="M 0 -7 L 2 -2 L 7 0 L 2 2 L 0 7 L -2 2 L -7 0 L -2 -2 Z"/></g>
+            <g transform="translate(972, 572)"><path d="M 0 -7 L 2 -2 L 7 0 L 2 2 L 0 7 L -2 2 L -7 0 L -2 -2 Z"/></g>
+          </g>
+
+          <!-- Ocean labels -->
+          <text x="80" y="380" fill="rgba(139,111,61,0.55)" font-family="Cormorant Garamond" font-size="13" font-style="italic" letter-spacing="3">OCÉANO PACÍFICO</text>
+          <text x="700" y="220" fill="rgba(139,111,61,0.55)" font-family="Cormorant Garamond" font-size="13" font-style="italic" letter-spacing="3">GOLFO DE MÉXICO</text>
+          <text x="855" y="445" fill="rgba(139,111,61,0.55)" font-family="Cormorant Garamond" font-size="11" font-style="italic" letter-spacing="2">MAR CARIBE</text>
+          <text x="220" y="220" fill="rgba(139,111,61,0.4)" font-family="Cormorant Garamond" font-size="10" font-style="italic" letter-spacing="2" transform="rotate(-78 220 220)">GOLFO DE CALIFORNIA</text>
+
+          <!-- USA Callout box (pin arriba representando California real al norte de Tijuana) -->
+          <g class="usa-region">
+            <rect class="usa-box" x="35" y="20" width="200" height="118" rx="4"/>
+            <line x1="65" y1="86" x2="205" y2="86" stroke="rgba(110,149,184,0.12)" stroke-width="0.5"/>
+            <text class="usa-label" x="135" y="105" text-anchor="middle">Estados Unidos</text>
+            <text class="usa-sub" x="135" y="124" text-anchor="middle">California · Fontana · Colton</text>
+          </g>
+
+          <!-- ============= MEXICO (Baja + Mainland unificado) ============= -->
+          <path class="mx-land" fill="url(#landFill)" d="M 154.58 82.13 C 157.45 81.23 174.04 79.16 178.64 78.77 C 183.24 78.38 190.86 78.44 194.0 78.77 C 197.14 79.10 203.37 80.98 205.52 81.61 C 207.67 82.24 209.89 83.89 212.43 84.19 C 214.97 84.49 222.56 82.41 227.28 84.19 C 232.00 85.97 248.85 97.63 252.88 99.41 C 256.91 101.19 256.76 98.33 261.84 99.41 C 266.92 100.49 290.73 107.10 296.4 108.7 C 302.07 110.30 304.69 112.55 310.48 113.09 C 316.27 113.63 338.86 113.34 346.06 113.34 C 353.26 113.34 368.12 114.47 372.18 113.09 C 376.24 111.71 374.76 102.83 380.88 101.48 C 387.00 100.13 416.00 97.63 424.66 101.48 C 433.32 105.33 448.94 127.79 455.12 134.5 C 461.30 141.21 470.78 155.70 477.65 159.01 C 484.52 162.32 503.58 162.19 514.0 162.88 C 524.42 163.57 559.52 162.86 566.99 164.94 C 574.46 167.02 573.76 175.23 578.0 180.68 C 582.24 186.13 599.31 205.14 603.34 211.64 C 607.37 218.14 608.95 232.14 612.56 236.41 C 616.17 240.68 629.39 246.32 634.32 248.28 C 639.25 250.24 653.25 249.30 654.8 253.18 C 656.35 257.06 649.00 275.15 647.63 281.56 C 646.26 287.97 643.23 300.52 643.02 308.13 C 642.81 315.74 644.29 340.15 645.84 346.83 C 647.39 353.51 655.00 361.47 656.34 365.41 C 657.68 369.35 655.39 376.57 657.36 380.63 C 659.33 384.69 669.44 394.94 673.23 400.24 C 677.02 405.54 686.82 421.77 689.87 426.04 C 692.92 430.31 694.23 433.66 699.34 436.88 C 704.45 440.10 726.60 452.51 733.65 453.65 C 740.70 454.79 754.47 447.88 759.76 446.68 C 765.05 445.48 774.33 444.08 778.96 443.33 C 783.59 442.58 793.68 442.73 799.44 440.23 C 805.20 437.73 824.49 425.52 828.37 421.91 C 832.25 418.30 831.76 412.70 832.72 409.27 C 833.68 405.84 835.22 396.26 836.56 392.5 C 837.90 388.74 842.03 379.37 844.24 377.02 C 846.45 374.67 853.02 373.10 855.5 372.38 C 857.98 371.66 861.01 371.76 865.49 370.83 C 869.97 369.90 887.42 365.19 893.9 364.38 C 900.38 363.57 916.92 362.99 921.04 363.86 C 925.16 364.73 928.39 370.51 929.23 371.86 C 930.07 373.21 929.08 373.42 928.21 375.47 C 927.34 377.52 923.72 386.54 921.81 389.4 C 919.90 392.26 913.55 396.01 911.82 399.98 C 910.09 403.95 907.71 418.94 906.96 423.46 C 906.21 427.97 907.36 436.27 905.42 438.68 C 903.48 441.09 892.08 441.39 890.32 444.1 C 888.56 446.81 892.71 458.89 890.32 461.9 C 887.93 464.91 876.11 468.21 869.84 469.9 C 863.57 471.59 840.74 473.34 836.56 476.35 C 832.38 479.36 838.63 490.88 834.0 495.7 C 829.37 500.52 801.96 512.96 796.88 517.63 C 791.80 522.30 793.32 534.94 790.48 535.69 C 787.64 536.44 777.49 526.64 772.56 524.08 C 767.63 521.52 755.11 516.05 748.24 513.76 C 741.37 511.47 723.24 504.65 713.68 504.47 C 704.12 504.29 674.83 512.75 666.32 512.21 C 657.81 511.67 649.11 502.84 640.72 499.83 C 632.33 496.82 604.83 490.35 594.38 486.41 C 583.93 482.47 558.11 469.31 551.12 466.03 C 544.13 462.75 540.30 460.25 534.48 458.29 C 528.66 456.33 507.53 452.75 501.2 449.26 C 494.87 445.77 484.69 431.97 480.21 428.36 C 475.73 424.75 466.89 422.24 462.8 418.3 C 458.71 414.36 445.83 397.90 445.14 394.56 C 444.45 391.22 455.72 393.03 456.91 389.66 C 458.10 386.29 457.23 371.36 455.38 365.67 C 453.53 359.98 444.42 345.93 441.04 340.9 C 437.66 335.87 431.38 328.60 426.45 322.58 C 421.52 316.56 406.66 296.49 398.8 289.3 C 390.94 282.11 365.09 267.54 359.12 260.92 C 353.15 254.30 353.13 239.52 347.6 232.54 C 342.07 225.56 319.08 207.47 311.76 201.06 C 304.44 194.65 290.58 184.66 284.88 177.59 C 279.18 170.52 267.61 147.90 262.86 140.43 C 258.11 132.96 247.58 117.45 244.18 113.6 C 240.78 109.75 235.95 108.13 233.68 107.41 C 231.41 106.69 226.81 107.41 224.72 107.41 C 222.63 107.41 217.25 107.26 215.76 107.41 C 214.27 107.56 212.49 107.13 211.92 108.7 C 211.35 110.27 209.71 115.71 210.9 120.83 C 212.09 125.95 218.31 146.30 222.16 152.56 C 226.01 158.82 239.29 169.67 243.92 174.49 C 248.55 179.31 258.02 188.99 261.84 193.84 C 265.66 198.69 272.18 209.44 276.69 216.03 C 281.20 222.62 296.11 243.90 300.5 250.34 C 304.89 256.78 311.24 265.61 314.32 271.24 C 317.40 276.87 323.54 294.01 326.86 298.59 C 330.18 303.17 340.89 307.21 342.74 310.46 C 344.59 313.71 343.40 324.04 342.74 326.45 C 342.08 328.86 338.92 332.42 337.1 331.1 C 335.28 329.78 331.57 319.37 327.12 315.1 C 322.67 310.83 304.19 297.83 298.96 294.46 C 293.73 291.09 285.61 289.81 282.32 286.2 C 279.03 282.59 275.37 269.79 270.8 263.5 C 266.23 257.21 250.26 238.87 243.15 232.28 C 236.04 225.69 214.29 210.37 209.87 207.0 C 205.45 203.63 203.53 205.83 205.26 203.39 C 206.99 200.95 225.14 191.13 224.72 186.1 C 224.30 181.07 205.92 164.97 201.68 160.3 C 197.44 155.63 190.61 149.27 188.37 146.11 C 186.13 142.95 184.21 136.67 182.48 133.21 C 180.75 129.75 175.46 120.41 173.52 116.44 C 171.58 112.47 168.11 102.64 165.84 99.15 C 163.57 95.66 155.37 88.50 154.06 86.51 C 152.75 84.52 151.71 83.03 154.58 82.13 Z"/>
+
+          <!-- ============= STATE LABELS ============= -->
+          <text class="state-label" x="336" y="190">Sonora</text>
+          <text class="state-label" x="401" y="259">Sinaloa</text>
+          <text class="state-label" x="430" y="368">Nayarit</text>
+          <text class="state-label" x="510" y="368">Jalisco</text>
+          <text class="state-label" x="610" y="420">Michoacán</text>
+
+          <!-- ============= INTERACTIVE PINS (proyectado de coords reales) ============= -->
+          <!-- Sonora · Cd. Obregón (27.49°N, 109.93°W) -->
+          <g class="pin-group" data-state="Sonora" transform="translate(336.6, 212.2)" onclick="selectState('Sonora')">
+            <circle class="pin-pulse" cx="0" cy="0" r="8"/>
+            <circle class="pin-ring" cx="0" cy="0" r="14"/>
+            <circle class="pin-dot" cx="0" cy="0" r="9"/>
+            <text class="pin-count" x="0" y="0">1</text>
+          </g>
+
+          <!-- Sinaloa · Culiacán (24.81°N, 107.40°W) -->
+          <g class="pin-group" data-state="Sinaloa" transform="translate(401.4, 281.3)" onclick="selectState('Sinaloa')">
+            <circle class="pin-pulse" cx="0" cy="0" r="8"/>
+            <circle class="pin-ring" cx="0" cy="0" r="14"/>
+            <circle class="pin-dot" cx="0" cy="0" r="9"/>
+            <text class="pin-count" x="0" y="0">1</text>
+          </g>
+
+          <!-- Nayarit · Bahía de Banderas / Nuevo Vallarta (20.71°N, 105.30°W) -->
+          <g class="pin-group" data-state="Nayarit" transform="translate(455.1, 387.1)" onclick="selectState('Nayarit')">
+            <circle class="pin-pulse" cx="0" cy="0" r="8"/>
+            <circle class="pin-ring" cx="0" cy="0" r="20"/>
+            <circle class="pin-dot" cx="0" cy="0" r="14"/>
+            <text class="pin-count" x="0" y="0">9</text>
+          </g>
+
+          <!-- Jalisco · Zapopan/GDL (20.67°N, 103.34°W) -->
+          <g class="pin-group" data-state="Jalisco" transform="translate(505.3, 388.1)" onclick="selectState('Jalisco')">
+            <circle class="pin-pulse" cx="0" cy="0" r="8"/>
+            <circle class="pin-ring" cx="0" cy="0" r="22"/>
+            <circle class="pin-dot" cx="0" cy="0" r="16"/>
+            <text class="pin-count" x="0" y="0" style="font-size:14px">12</text>
+          </g>
+
+          <!-- Michoacán · San José de Gracia (19.88°N, 102.27°W) -->
+          <g class="pin-group" data-state="Michoacán" transform="translate(548, 415)" onclick="selectState('Michoacán')">
+            <circle class="pin-pulse" cx="0" cy="0" r="8"/>
+            <circle class="pin-ring" cx="0" cy="0" r="14"/>
+            <circle class="pin-dot" cx="0" cy="0" r="9"/>
+            <text class="pin-count" x="0" y="0">1</text>
+          </g>
+
+          <!-- USA · Fontana / Colton (proyectado a posición real de California, al norte de Tijuana) -->
+          <g class="pin-group" data-state="USA" transform="translate(135, 55)" onclick="selectState('USA')">
+            <circle class="pin-pulse" cx="0" cy="0" r="8" style="fill:#6e95b8"/>
+            <circle class="pin-ring" cx="0" cy="0" r="14" style="fill:rgba(110,149,184,0.18);stroke:#6e95b8"/>
+            <circle class="pin-dot" cx="0" cy="0" r="9" style="fill:#6e95b8;filter:drop-shadow(0 0 6px rgba(110,149,184,0.6))"/>
+            <text class="pin-count" x="0" y="0">2</text>
+          </g>
+
+          <!-- ============= COMPASS ROSE ============= -->
+          <g transform="translate(925, 525)" opacity="0.55">
+            <circle r="32" fill="none" stroke="rgba(200,164,94,0.25)" stroke-width="0.5"/>
+            <circle r="22" fill="none" stroke="rgba(200,164,94,0.15)" stroke-width="0.4"/>
+            <line x1="0" y1="-26" x2="0" y2="26" stroke="rgba(200,164,94,0.25)" stroke-width="0.5"/>
+            <line x1="-26" y1="0" x2="26" y2="0" stroke="rgba(200,164,94,0.25)" stroke-width="0.5"/>
+            <polygon points="0,-22 -4,4 0,-3 4,4" fill="var(--g)"/>
+            <polygon points="0,22 -4,-4 0,3 4,-4" fill="rgba(200,164,94,0.4)"/>
+            <text y="-36" text-anchor="middle" fill="var(--g)" font-family="Cormorant Garamond" font-size="13" font-weight="500" letter-spacing="2">N</text>
+            <text y="44" text-anchor="middle" fill="rgba(200,164,94,0.6)" font-family="Cormorant Garamond" font-size="11" letter-spacing="2">S</text>
+            <text x="-36" y="4" text-anchor="middle" fill="rgba(200,164,94,0.6)" font-family="Cormorant Garamond" font-size="11" letter-spacing="2">O</text>
+            <text x="38" y="4" text-anchor="middle" fill="rgba(200,164,94,0.6)" font-family="Cormorant Garamond" font-size="11" letter-spacing="2">E</text>
+          </g>
+        </svg>
+
+        <div class="map-tooltip" id="mapTooltip"></div>
+      </div>
+
+      <!-- Detail panel -->
+      <div class="map-detail" id="mapDetail">
+        <!-- Inyectado por JS -->
+      </div>
+    </div>
+
+    <h3 class="panel-title" style="margin-bottom:6px">Resumen por Entidad</h3>
+    <p class="panel-sub">Inversión documentada y propiedades activas</p>
+    <div class="estado-grid" id="estadoGrid"></div>
+
+    <div class="panel" style="margin-top:40px">
+      <h3 class="panel-title">Inversión Documentada por Municipio</h3>
+      <p class="panel-sub">Monto en MXN agrupado por ciudad</p>
+      <div class="chart-wrap" style="height:360px">
+        <canvas id="chartCiudad"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROPIETARIOS ========== -->
+  <section class="section" id="sec-propietarios">
+    <h2 class="section-title">Registro por Propietario</h2>
+    <p class="section-sub">Empresas y personas físicas vinculadas</p>
+
+    <div class="two-col-equal">
+      <div class="panel">
+        <h3 class="panel-title">Empresas</h3>
+        <p class="panel-sub">Personas morales registradas</p>
+        <div class="prop-list" id="propEmpresas"></div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Personas Físicas</h3>
+        <p class="panel-sub">Titulares individuales</p>
+        <div class="prop-list" id="propPersonas"></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:24px">
+      <h3 class="panel-title">Concentración Patrimonial</h3>
+      <p class="panel-sub">Inversión documentada por titular</p>
+      <div class="chart-wrap" style="height:340px">
+        <canvas id="chartConcen"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PLUSVALÍA ========== -->
+  <section class="section" id="sec-plusvalia">
+    <h2 class="section-title">Análisis de Plusvalía</h2>
+    <p class="section-sub">Avalúos vigentes · Proyección de portafolio</p>
+
+    <div class="plus-hero">
+      <div class="plus-card">
+        <div class="plus-label">Plusvalía promedio observada</div>
+        <div class="plus-big gr" id="plusAvg">+63.33<span class="small">%</span></div>
+        <div class="plus-detail">
+          Calculada sobre las dos propiedades con avalúo vigente (julio–agosto 2025) <strong>Casa Zoto Grande</strong> y <strong>Plaza Guadalupe</strong>. Estos avalúos representan el incremento de valor real sobre el costo de adquisición documentado.
+        </div>
+        <div class="plus-comp-grid">
+          <div class="plus-comp">
+            <div class="ttl">Casa Zoto Grande</div>
+            <div class="va">$50.00M</div>
+            <div class="ar">↓</div>
+            <div class="vb">$84.42M</div>
+            <div class="delta">+ 68.85% · jul 2025</div>
+          </div>
+          <div class="plus-comp">
+            <div class="ttl">Plaza Guadalupe</div>
+            <div class="va">$37.50M</div>
+            <div class="ar">↓</div>
+            <div class="vb">$59.18M</div>
+            <div class="delta">+ 57.81% · ago 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plus-card">
+        <div class="plus-label">Valor proyectado del portafolio</div>
+        <div class="plus-big" id="plusTotal">— <span class="small">M</span></div>
+        <div class="plus-detail">
+          Aplicando la plusvalía promedio del <strong>+63.33%</strong> al portafolio activo con costo documentado, el valor estimado de mercado supera ampliamente la <strong>inversión activa de <span id="plusInvActiva">—</span></strong>.
+        </div>
+        <div style="margin-top:24px">
+          <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed rgba(200,164,94,0.12)">
+            <span style="font-size:11px;color:var(--tx2);letter-spacing:.2em;text-transform:uppercase">Inversión activa</span>
+            <span style="font-family:'Cormorant Garamond';font-size:18px;color:var(--gl)" id="plusInvActiva2">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed rgba(200,164,94,0.12)">
+            <span style="font-size:11px;color:var(--tx2);letter-spacing:.2em;text-transform:uppercase">Valor estimado</span>
+            <span style="font-family:'Cormorant Garamond';font-size:18px;color:var(--g)" id="plusValorEst">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px 0">
+            <span style="font-size:11px;color:var(--tx2);letter-spacing:.2em;text-transform:uppercase">Plusvalía bruta</span>
+            <span style="font-family:'Cormorant Garamond';font-size:18px;color:var(--gr)" id="plusBruta">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">Proyección por Propiedad</h3>
+      <p class="panel-sub">Valor estimado aplicando plusvalía promedio · propiedades activas con costo</p>
+      <div class="chart-wrap" style="height:380px">
+        <canvas id="chartPlus"></canvas>
+      </div>
+    </div>
+
+    <div class="alert-card info" style="margin-top:24px;border-left-color:var(--gl)">
+      <div class="alert-title">Recomendación · Avalúos prioritarios</div>
+      <div class="alert-meta">Sugerencia analítica</div>
+      <div class="alert-body">
+        Para validar la proyección, se sugiere ordenar avalúos formales para las <strong>5 propiedades de mayor inversión sin avalúo vigente</strong>: Federalismo ($180M), Tigres III ($74M), Tigres II ($70M), Punta Mita Ostiones ($51M) y Sams Hermanas ($50M). Esto representaría el <strong>61% del portafolio activo por valor</strong>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== INVENTARIO ========== -->
+  <section class="section" id="sec-inventario">
+    <h2 class="section-title">Inventario Maestro</h2>
+    <p class="section-sub">26 propiedades · vista detallada</p>
+
+    <div class="filters">
+      <span class="label">Filtros</span>
+      <input type="text" id="fSearch" placeholder="Buscar por nombre, ubicación, escritura...">
+      <select id="fEstado">
+        <option value="">Todos los estados</option>
+      </select>
+      <select id="fProp">
+        <option value="">Todos los propietarios</option>
+      </select>
+      <select id="fStatus">
+        <option value="">Todos los estatus</option>
+        <option value="Activa">Activa</option>
+        <option value="Vendida">Vendida</option>
+        <option value="Pendiente">Pendiente</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Propiedad</th>
+            <th>Ubicación</th>
+            <th>Sup.</th>
+            <th>Costo</th>
+            <th>Avalúo</th>
+            <th>Propietario</th>
+            <th>Documentos</th>
+            <th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody id="invBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== VENDIDAS ========== -->
+  <section class="section" id="sec-vendidas">
+    <h2 class="section-title">Propiedades Vendidas</h2>
+    <p class="section-sub">3 propiedades · $32 M aplicados a abonos</p>
+    <div class="sold-grid" id="soldGrid"></div>
+  </section>
+
+  <!-- ========== ALERTAS ========== -->
+  <section class="section" id="sec-alertas">
+    <h2 class="section-title">Pendientes & Alertas Operativas</h2>
+    <p class="section-sub">Atención requerida</p>
+    <div class="alert-grid" id="alertGrid"></div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-line"></div>
+    <div class="footer-content">
+      <div class="footer-text">Documento estrictamente confidencial</div>
+      <div class="footer-meta">AO · Patrimonio · Agosto 2025</div>
+    </div>
+    <div class="footer-flex">
+      <div class="flex-mark">FX</div>
+      <div>
+        <div class="flex-name">Flexder Corporativo</div>
+        <div class="flex-tag">Estrategia · Datos · Diseño</div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ========== MODAL FICHA TÉCNICA ========== -->
+<div class="modal-overlay" id="modal" onclick="if(event.target.id==='modal')closeModal()">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
+<script>
+// ========== DATOS ==========
+const PROPIEDADES = [
+  {id:1, nombre:"Casa Zoto Grande", escritura:"36,374", direccion:"Av. Acueducto 5300, Lote 88, Cond. Zoto Grande Residencial", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:902.41, costo:50000000, avaluo:84424010, avaluoFecha:"15 jul 2025", documentacion:"Escrituras Completas", docTipo:"escrit", propietario:"José Alfredo Olivas Rojas", propietarioTipo:"persona", observaciones:"Contrato mutuo privado", estatus:"Activa"},
+  {id:2, nombre:"Puerta Las Lomas", escritura:"346", direccion:"Av. Universidad 32, Cond. Puerta Las Lomas", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:395.18, costo:5530306, avaluo:null, documentacion:"Sólo copia certificada del RPP", docTipo:"copia", propietario:"Lorely Guadalupe Vivian Flores y AO", propietarioTipo:"mixto", observaciones:"Conseguir escritura con notario · Arqui Alonso sin info", estatus:"Pendiente"},
+  {id:3, nombre:"Plaza Guadalupe", escritura:"39923 y 40,143", direccion:"Anillo Periférico 511, Frac. Resid. Plaza Guadalupe", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:2159.16, costo:37500000, avaluo:59183000, avaluoFecha:"5 ago 2025", documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"$17.5M efectivo + $20M transferencia · Construcción ¿?", estatus:"Activa"},
+  {id:4, nombre:"Terreno Federalismo", escritura:"81,832", direccion:"Federalismo 1000", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:36637.93, costo:180000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
+  {id:5, nombre:"Casa El Ranchito Ejidal", escritura:null, direccion:"Casa Ejidal", ubicacion:"Cajititlán, Jal.", estado:"Jalisco", region:"Cajititlán", superficie:null, costo:null, avaluo:null, documentacion:"Recibo CFE · faltan documentos del ejido", docTipo:"copia", propietario:"Vianney Peregrina Rodriguez", propietarioTipo:"persona", observaciones:"Regalo a AO · faltan documentos originales del ejido", estatus:"Activa", regalo:true},
+  {id:6, nombre:"Terreno Israel (El Zapatero)", escritura:"13,934", direccion:"Puerta El Zapatero (Aguacates)", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:4000000, avaluo:null, documentacion:"4 transferencias por $182,846 c/u para escrituras · Vianney pagó $309,000 a Ricardo (ISR faltante)", docTipo:"escrit", propietario:"Alanya Residences", propietarioTipo:"empresa", observaciones:"$2M efectivo a Antonio + $1.8M transferencias · Faltan por pagar $200,000", estatus:"Pendiente"},
+  {id:7, nombre:"Casa La Loma", escritura:null, direccion:"La arregló Alejo", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:null, avaluo:null, documentacion:"No se sabe quién tiene los papeles", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Pendiente · documentación extraviada", estatus:"Pendiente"},
+  {id:8, nombre:"Cabaña AO", escritura:null, direccion:"Cabaña", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:null, avaluo:null, documentacion:"Verificar con Magaña", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Confirmar si está a nombre de AO", estatus:"Pendiente"},
+  {id:9, nombre:"Casa compra a Alejo (oct 2022)", escritura:null, direccion:"Casa", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:570000, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Compra octubre 2022", estatus:"Pendiente"},
+  {id:10, nombre:"Los Pinitos", escritura:"37,279", direccion:"Prolongación Priv. del Perpetuo Socorro 777", ubicacion:"San José de Gracia, Mich.", estado:"Michoacán", region:"San José de Gracia", superficie:460, costo:3000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
+  {id:11, nombre:"Casa Culiacán (Sra. Marcela)", escritura:null, direccion:"Casa", ubicacion:"Culiacán, Sin.", estado:"Sinaloa", region:"Culiacán", superficie:null, costo:null, avaluo:null, documentacion:"Sin documentos · sólo hay un evalúo", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Marcela se encarga · sin información", estatus:"Pendiente"},
+  {id:12, nombre:"Terreno La Guerrero", escritura:null, direccion:"Terreno", ubicacion:"Cd. Obregón, Son.", estado:"Sonora", region:"Cd. Obregón", superficie:null, costo:null, avaluo:null, documentacion:"No se ha podido arreglar la escritura", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Marcela se encarga · sin información", estatus:"Pendiente"},
+  {id:13, nombre:"Punta Mita Punta Burro", escritura:null, direccion:"Ejido Higuera Blanca, Punta Burro", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:null, costo:14000000, avaluo:null, documentacion:"No hay nada", docTipo:"no-doc", propietario:"Lorely Guadalupe Vivian Flores", propietarioTipo:"persona", observaciones:"Pago 1 · lo arregla Jaziel", estatus:"Pendiente"},
+  {id:14, nombre:"Punta Mita Ostiones", escritura:null, direccion:"Ejido Higuera Blanca", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:null, costo:51000000, avaluo:null, documentacion:"Escrituras con reserva de dominio", docTipo:"escrit", propietario:"Sin asignar", propietarioTipo:"sininfo", observaciones:"", estatus:"Activa"},
+  {id:15, nombre:"Tigres I (La Jarretadera)", escritura:"11,779", direccion:"Fracción B1 del Ejido, Marzielo", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:1160.51, costo:48550000, avaluo:null, documentacion:"Falta firma de Vianney", docTipo:"copia", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Escrituras pendientes de firmar", estatus:"Pendiente"},
+  {id:16, nombre:"Tigres II (junto Marzielo)", escritura:null, direccion:"Junto a Marzielo", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:70000000, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
+  {id:17, nombre:"Tigres III", escritura:null, direccion:"Tigres III", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:74000000, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
+  {id:18, nombre:"Sams Hermanas (Parcela 174)", escritura:"11,768", direccion:"Parcela 174 Z1, Ejido Bucerías", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:13863.61, costo:50000000, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"$30M transferencia + $20M efectivo (1 ha 38 áreas 63.61 m²)", estatus:"Activa"},
+  {id:19, nombre:"Sams Roque (Fracción 3)", escritura:"11,071", direccion:"Carretera Federal 200, Mezcales", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:5580.75, costo:41123287, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Costo registrado incluye ambas fracciones (3 y 4)", estatus:"Activa"},
+  {id:20, nombre:"Sams Roque (Fracción 4)", escritura:"11,072", direccion:"Carretera Federal 200, Mezcales", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:437.29, costo:null, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Costo combinado con Fracción 3 ($41,123,287 por ambas)", estatus:"Activa"},
+  {id:21, nombre:"Terreno Fontana (con construcción)", escritura:null, direccion:"Fontana", ubicacion:"USA", estado:"USA", region:"Fontana, CA", superficie:null, costo:null, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"1 terreno con construcción", estatus:"Pendiente"},
+  {id:22, nombre:"2 Terrenos en Colton", escritura:null, direccion:"Colton", ubicacion:"USA", estado:"USA", region:"Colton, CA", superficie:null, costo:null, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"2 lotes", estatus:"Pendiente"},
+  {id:23, nombre:"Patria 675 (Jardines Universidad)", escritura:"17,842", direccion:"Av. Patria 675, Frac. Jardines Universidad", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:406.82, costo:14000000, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Vendida $13M · abono adeudo Adriana Rodríguez", estatus:"Vendida", venta:13000000},
+  {id:24, nombre:"López Mateos (Lote 8)", escritura:"18,406", direccion:"Fracción B Lote 8, Ejido Santa Ana Tepetitlán", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:420, costo:2800000, avaluo:null, documentacion:"Sólo copia · se puede conseguir original", docTipo:"copia", propietario:"José Alfredo Olivas Rojas (rep. por Emanuel Alonso)", propietarioTipo:"persona", observaciones:"Vendida $7M · abono a compra Tigres III", estatus:"Vendida", venta:7000000},
+  {id:25, nombre:"Casa El Tigre Náutico", escritura:null, direccion:"Frac. El Tigre Náutico", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:9900000, avaluo:null, documentacion:"En trámite con hipoteca BBVA", docTipo:"copia", propietario:"José Alfredo Olivas Rojas", propietarioTipo:"persona", observaciones:"Vendida $12M · abono Tigres III · Gabriel Escoto", estatus:"Vendida", venta:12000000},
+  {id:26, nombre:"Terreno con Portón", escritura:null, direccion:"Los Olivos", ubicacion:"Los Olivos, Jal.", estado:"Jalisco", region:"Los Olivos", superficie:null, costo:null, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Última visita antes de pandemia", estatus:"Pendiente"}
+];
+
+// ========== LOGIN ==========
+const ins = ['p1','p2','p3','p4'].map(id => document.getElementById(id));
+ins.forEach((inp,i) => {
+  inp.addEventListener('input', e => {
+    if(e.target.value && i < ins.length-1) ins[i+1].focus();
+    if(i === ins.length-1 && ins.every(x => x.value)) checkPin();
+  });
+  inp.addEventListener('keydown', e => {
+    if(e.key === 'Backspace' && !inp.value && i > 0) ins[i-1].focus();
+    if(e.key === 'Enter') checkPin();
+  });
+});
+ins[0].focus();
+
+function checkPin(){
+  const pin = ins.map(x => x.value).join('');
+  // 0826 = Master · 4927 = Equipo AO
+  const pins = {'0826':'Master', '4927':'Equipo AO'};
+  if(pins[pin]){
+    sessionStorage.setItem('aoUser', pins[pin]);
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('dash').classList.add('active');
+    setTimeout(initDashboard, 100);
+  } else {
+    document.getElementById('loginError').textContent = 'PIN incorrecto';
+    ins.forEach(x => x.value = '');
+    ins[0].focus();
+    setTimeout(() => document.getElementById('loginError').textContent = '', 2500);
+  }
+}
+
+// ========== TABS ==========
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('sec-' + tab.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+// ========== HELPERS ==========
+const fmt = n => n === null || n === undefined ? '—' : '$' + (n/1000000).toFixed(2) + 'M';
+const fmtFull = n => n === null || n === undefined ? '—' : '$' + n.toLocaleString('en-US');
+const fmtSup = n => n === null || n === undefined ? '—' : n.toLocaleString('en-US') + ' m²';
+
+// Score de Salud Documental (0-100)
+function calcScore(p){
+  let s = 0;
+  // Escritura formal: 30 / parcial: 15 / nada: 0
+  if(p.docTipo === 'escrit') s += 30;
+  else if(p.docTipo === 'copia') s += 15;
+  // Propietario asignado: 20
+  if(p.propietarioTipo !== 'sininfo') s += 20;
+  // Costo documentado: 15
+  if(p.costo !== null && p.costo > 0) s += 15;
+  if(p.regalo) s += 10; // si fue regalo, contar como parcial
+  // Avalúo vigente: 15
+  if(p.avaluo) s += 15;
+  // Estatus claro: 10 (Activa o Vendida sí, Pendiente parcial)
+  if(p.estatus === 'Activa' || p.estatus === 'Vendida') s += 10;
+  else s += 3;
+  // Sin observaciones críticas (no menciona "sin info", "no se sabe", "pendiente"): 10
+  const obs = (p.observaciones || '').toLowerCase();
+  if(!obs.includes('sin info') && !obs.includes('no se sabe') && !obs.includes('pendiente') && p.docTipo !== 'no-doc') s += 10;
+  return Math.min(100, s);
+}
+
+const PLUSVALIA_PROM = 0.6333; // promedio observado
+
+// ========== INIT ==========
+function initDashboard(){
+  // User badge
+  const u = sessionStorage.getItem('aoUser');
+  if(u){
+    const badge = document.getElementById('userBadge');
+    badge.innerHTML = `<span class="user-badge">${u}</span> · ago 2025`;
+  }
+  renderEstados();
+  renderPropietarios();
+  renderInventario();
+  renderVendidas();
+  renderAlertas();
+  renderKpiExtras();
+  initMapInteractions();
+  renderCharts();
+}
+
+// ========== MAPA INTERACTIVO ==========
+function initMapInteractions(){
+  const tooltip = document.getElementById('mapTooltip');
+  const stage = document.getElementById('mapStage');
+
+  document.querySelectorAll('.pin-group').forEach(pin => {
+    const state = pin.dataset.state;
+    const props = PROPIEDADES.filter(p => p.estado === state);
+    const inv = props.reduce((s, p) => s + (p.costo || 0), 0);
+    const activas = props.filter(p => p.estatus === 'Activa').length;
+    const vendidas = props.filter(p => p.estatus === 'Vendida').length;
+    const pendientes = props.filter(p => p.estatus === 'Pendiente').length;
+
+    pin.addEventListener('mouseenter', e => {
+      tooltip.innerHTML = `
+        <div class="tt-name">${state}</div>
+        <div class="tt-meta">${state === 'USA' ? 'Estados Unidos' : 'México'}</div>
+        <div class="tt-row"><span>Propiedades</span><span>${props.length}</span></div>
+        <div class="tt-row"><span>Activas</span><span>${activas}</span></div>
+        ${vendidas > 0 ? `<div class="tt-row"><span>Vendidas</span><span>${vendidas}</span></div>` : ''}
+        ${pendientes > 0 ? `<div class="tt-row"><span>Pendientes</span><span>${pendientes}</span></div>` : ''}
+        <div class="tt-row"><span>Inversión</span><span>${inv > 0 ? '$' + (inv/1000000).toFixed(1) + 'M' : 's/d'}</span></div>
+        <div class="tt-foot">Click para detalle</div>
+      `;
+      tooltip.classList.add('show');
+    });
+
+    pin.addEventListener('mousemove', e => {
+      const rect = stage.getBoundingClientRect();
+      let x = e.clientX - rect.left + 14;
+      let y = e.clientY - rect.top + 14;
+      // Evitar que se salga
+      if(x + 220 > rect.width) x = e.clientX - rect.left - 220;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
+    });
+
+    pin.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+  });
+}
+
+function selectState(state){
+  document.querySelectorAll('.pin-group').forEach(p => p.classList.toggle('active', p.dataset.state === state));
+
+  const props = PROPIEDADES.filter(p => p.estado === state);
+  const inv = props.reduce((s, p) => s + (p.costo || 0), 0);
+  const avaluo = props.filter(p => p.avaluo).reduce((s, p) => s + p.avaluo, 0);
+  const activas = props.filter(p => p.estatus === 'Activa').length;
+  const vendidas = props.filter(p => p.estatus === 'Vendida').length;
+  const pendientes = props.filter(p => p.estatus === 'Pendiente').length;
+
+  const detail = document.getElementById('mapDetail');
+  detail.innerHTML = `
+    <div class="map-detail-head">
+      <div>
+        <div class="map-detail-name">${state}</div>
+        <div class="map-detail-region">${state === 'USA' ? 'California · Estados Unidos' : 'México · ' + props.length + ' propiedades'}</div>
+      </div>
+      <button class="map-close" onclick="closeStateDetail()">×</button>
+    </div>
+    <div class="map-detail-stats">
+      <div class="mds"><div class="lab">Propiedades</div><div class="val">${props.length}</div></div>
+      <div class="mds"><div class="lab">Activas</div><div class="val">${activas}</div></div>
+      ${vendidas > 0 ? `<div class="mds"><div class="lab">Vendidas</div><div class="val">${vendidas}</div></div>` : ''}
+      ${pendientes > 0 ? `<div class="mds"><div class="lab">Pendientes</div><div class="val">${pendientes}</div></div>` : ''}
+      <div class="mds"><div class="lab">Inversión</div><div class="val">${inv > 0 ? '$' + (inv/1000000).toFixed(1) + 'M' : '—'}</div></div>
+      ${avaluo > 0 ? `<div class="mds"><div class="lab">Avalúo</div><div class="val">$${(avaluo/1000000).toFixed(1)}M</div></div>` : ''}
+    </div>
+    <div class="map-detail-list">
+      <div class="mdl-title">Propiedades en ${state} · click para ficha técnica</div>
+      <div class="mdl-grid">
+        ${props.map(p => `
+          <div class="mdl-item" onclick="openModal(${p.id})">
+            <div>
+              <div class="mdl-item-name">${p.nombre}</div>
+              <div class="mdl-item-meta">${p.region}${p.escritura ? ' · Esc. ' + p.escritura : ''} · <span class="badge ${p.estatus.toLowerCase()}" style="font-size:8px;padding:2px 6px">${p.estatus}</span></div>
+            </div>
+            <div class="mdl-item-money">${p.regalo ? 'Regalo' : (p.costo ? '$' + (p.costo/1000000).toFixed(1) + 'M' : '—')}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  detail.classList.add('show');
+  setTimeout(() => detail.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+}
+
+function closeStateDetail(){
+  document.getElementById('mapDetail').classList.remove('show');
+  document.querySelectorAll('.pin-group').forEach(p => p.classList.remove('active'));
+}
+
+// ========== KPIs EXTRA ==========
+function renderKpiExtras(){
+  // KPI Total propiedades · breakdown por estatus
+  const activas = PROPIEDADES.filter(p => p.estatus === 'Activa').length;
+  const pendientes = PROPIEDADES.filter(p => p.estatus === 'Pendiente').length;
+  const vendidas = PROPIEDADES.filter(p => p.estatus === 'Vendida').length;
+  const elTotalDetail = document.getElementById('kpiTotalDetail');
+  if(elTotalDetail) elTotalDetail.innerHTML = `Activas <span class="pos">${activas}</span> · Pendientes <span>${pendientes}</span> · Vendidas <span>${vendidas}</span>`;
+
+  // KPI Inversión documentada total
+  const invTotal = PROPIEDADES.reduce((a,p) => a + (p.costo || 0), 0);
+  const conCosto = PROPIEDADES.filter(p => p.costo).length;
+  const elInv = document.getElementById('kpiInversion');
+  if(elInv) elInv.innerHTML = '$' + (invTotal/1000000).toFixed(2) + ' <span class="small">M</span>';
+  const elInvDetail = document.getElementById('kpiInversionDetail');
+  if(elInvDetail) elInvDetail.textContent = `${conCosto} propiedades con monto registrado`;
+
+  // Salud documental
+  const scores = PROPIEDADES.map(calcScore);
+  const avg = Math.round(scores.reduce((a,b) => a+b, 0) / scores.length);
+  document.getElementById('kpiScore').innerHTML = avg + ' <span class="small">/100</span>';
+
+  // Plusvalía proyectada (sobre activas con costo, excluyendo vendidas)
+  const inv = PROPIEDADES.filter(p => p.estatus !== 'Vendida').reduce((a,p) => a + (p.costo || 0), 0);
+  const proy = inv * (1 + PLUSVALIA_PROM);
+  const plusBruta = proy - inv;
+  document.getElementById('kpiPlus').innerHTML = '+$' + (plusBruta/1000000).toFixed(0) + ' <span class="small">M</span>';
+
+  // Sección Plusvalía: valores dinámicos
+  const elPlusTotal = document.getElementById('plusTotal');
+  if(elPlusTotal) elPlusTotal.innerHTML = '$' + (proy/1000000).toFixed(0) + ' <span class="small">M</span>';
+  const elInv1 = document.getElementById('plusInvActiva');
+  const elInv2 = document.getElementById('plusInvActiva2');
+  if(elInv1) elInv1.textContent = '$' + (inv/1000000).toFixed(2) + 'M';
+  if(elInv2) elInv2.textContent = '$' + (inv/1000000).toFixed(2) + 'M';
+  const elValorEst = document.getElementById('plusValorEst');
+  if(elValorEst) elValorEst.textContent = '$' + (proy/1000000).toFixed(0) + 'M';
+  const elPlusBruta = document.getElementById('plusBruta');
+  if(elPlusBruta) elPlusBruta.textContent = '+ $' + (plusBruta/1000000).toFixed(0) + 'M';
+}
+
+// ========== ESTADOS ==========
+function renderEstados(){
+  const stats = {};
+  PROPIEDADES.forEach(p => {
+    if(!stats[p.estado]) stats[p.estado] = {count:0, costo:0, region:p.estado};
+    stats[p.estado].count++;
+    stats[p.estado].costo += p.costo || 0;
+  });
+  const max = Math.max(...Object.values(stats).map(s => s.count));
+  const ord = Object.entries(stats).sort((a,b) => b[1].count - a[1].count);
+  const grid = document.getElementById('estadoGrid');
+  grid.innerHTML = ord.map(([est, s]) => `
+    <div class="estado-card">
+      <div class="est-flag"></div>
+      <div class="est-name">${est}</div>
+      <div class="est-region">${est === 'USA' ? 'EE.UU.' : 'México'}</div>
+      <div class="est-count">${s.count}</div>
+      <div class="est-label">propiedad${s.count === 1 ? '' : 'es'}</div>
+      <div class="est-bar"><div class="est-bar-fill" style="width:${(s.count/max)*100}%"></div></div>
+      <div class="est-monto">Inversión: <strong>${s.costo > 0 ? fmt(s.costo) : 's/d'}</strong></div>
+    </div>
+  `).join('');
+
+  // Llenar filtros
+  const fEst = document.getElementById('fEstado');
+  ord.forEach(([est]) => fEst.innerHTML += `<option value="${est}">${est}</option>`);
+}
+
+// ========== PROPIETARIOS ==========
+function renderPropietarios(){
+  const stats = {};
+  PROPIEDADES.forEach(p => {
+    const key = p.propietario;
+    if(!stats[key]) stats[key] = {count:0, costo:0, tipo:p.propietarioTipo};
+    stats[key].count++;
+    stats[key].costo += p.costo || 0;
+  });
+  const ord = Object.entries(stats).sort((a,b) => b[1].count - a[1].count);
+
+  const empresas = ord.filter(([_,s]) => s.tipo === 'empresa');
+  const personas = ord.filter(([_,s]) => s.tipo === 'persona' || s.tipo === 'mixto' || s.tipo === 'sininfo');
+
+  const renderItem = ([name, s]) => `
+    <div class="prop-item">
+      <div class="prop-name">
+        ${name}
+        <span class="tag ${s.tipo}">${s.tipo === 'sininfo' ? 'sin info' : s.tipo}</span>
+      </div>
+      <div class="prop-count">${s.count}</div>
+      <div class="prop-monto">${s.costo > 0 ? fmt(s.costo) : 's/d'}</div>
+    </div>`;
+
+  document.getElementById('propEmpresas').innerHTML = empresas.map(renderItem).join('');
+  document.getElementById('propPersonas').innerHTML = personas.map(renderItem).join('');
+
+  const fProp = document.getElementById('fProp');
+  ord.forEach(([n]) => fProp.innerHTML += `<option value="${n}">${n}</option>`);
+}
+
+// ========== INVENTARIO ==========
+function renderInventario(filtered){
+  const data = filtered || PROPIEDADES;
+  const tbody = document.getElementById('invBody');
+  if(data.length === 0){
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--tx2)">Sin resultados</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(p => {
+    let docBadge = 'no-doc', docText = 'Sin docs.';
+    if(p.docTipo === 'escrit'){ docBadge = 'escrit'; docText = 'Escritura'; }
+    else if(p.docTipo === 'copia'){ docBadge = 'copia'; docText = 'Copia / Parcial'; }
+
+    let stBadge = 'activa';
+    if(p.estatus === 'Vendida') stBadge = 'vendida';
+    else if(p.estatus === 'Pendiente') stBadge = 'pendiente';
+
+    return `
+      <tr onclick="openModal(${p.id})">
+        <td class="td-num">${p.id.toString().padStart(2,'0')}</td>
+        <td class="td-name">${p.nombre}${p.escritura ? `<br><span style="font-size:9px;color:var(--tx2);letter-spacing:.2em">ESC. ${p.escritura}</span>` : ''}</td>
+        <td>${p.ubicacion}</td>
+        <td>${fmtSup(p.superficie)}</td>
+        <td class="td-money">${p.regalo ? '<span class="badge regalo">Regalo</span>' : (p.costo === null ? '—' : fmt(p.costo))}</td>
+        <td class="td-money">${p.avaluo ? `${fmt(p.avaluo)}<br><span style="font-size:9px;color:var(--tx2)">${p.avaluoFecha}</span>` : '—'}</td>
+        <td>${p.propietario}</td>
+        <td><span class="badge ${docBadge}">${docText}</span></td>
+        <td><span class="badge ${stBadge}">${p.estatus}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+['fSearch','fEstado','fProp','fStatus'].forEach(id => {
+  document.getElementById(id).addEventListener('input', applyFilters);
+  document.getElementById(id).addEventListener('change', applyFilters);
+});
+
+function applyFilters(){
+  const q = document.getElementById('fSearch').value.toLowerCase();
+  const e = document.getElementById('fEstado').value;
+  const p = document.getElementById('fProp').value;
+  const s = document.getElementById('fStatus').value;
+  const r = PROPIEDADES.filter(x =>
+    (!q || (x.nombre+x.ubicacion+(x.escritura||'')+x.propietario+x.direccion).toLowerCase().includes(q)) &&
+    (!e || x.estado === e) &&
+    (!p || x.propietario === p) &&
+    (!s || x.estatus === s)
+  );
+  renderInventario(r);
+}
+
+// ========== VENDIDAS ==========
+function renderVendidas(){
+  const v = PROPIEDADES.filter(p => p.estatus === 'Vendida');
+  document.getElementById('soldGrid').innerHTML = v.map(p => {
+    const diff = p.venta - p.costo;
+    return `
+      <div class="sold-card">
+        <div class="sold-card-head">
+          <div class="sold-card-name">${p.nombre}</div>
+          <div class="sold-card-loc">${p.ubicacion}</div>
+        </div>
+        <div class="sold-card-body">
+          <div class="sold-row"><span class="lab">Escritura</span><span class="val">${p.escritura || '—'}</span></div>
+          <div class="sold-row"><span class="lab">Superficie</span><span class="val">${fmtSup(p.superficie)}</span></div>
+          <div class="sold-row"><span class="lab">Costo original</span><span class="val money">${fmt(p.costo)}</span></div>
+          <div class="sold-row"><span class="lab">Precio venta</span><span class="val money">${fmt(p.venta)}</span></div>
+          <div class="sold-row"><span class="lab">Diferencia</span><span class="val money ${diff >= 0 ? 'gain' : 'loss'}">${diff >= 0 ? '+' : ''}${fmt(diff)}</span></div>
+          <div class="sold-row"><span class="lab">Propietario</span><span class="val">${p.propietario}</span></div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx2);line-height:1.6">${p.observaciones}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ========== ALERTAS ==========
+function renderAlertas(){
+  const sinDoc = PROPIEDADES.filter(p => p.docTipo === 'no-doc');
+  const sinInfo = PROPIEDADES.filter(p => p.propietarioTipo === 'sininfo');
+  const copia = PROPIEDADES.filter(p => p.docTipo === 'copia');
+  const pendientes = PROPIEDADES.filter(p => p.estatus === 'Pendiente');
+
+  const alerts = [
+    {nivel:'warn', titulo:'Documentación faltante', meta:`${sinDoc.length} propiedades`, body:`Sin escrituras formales: <strong>${sinDoc.map(p => p.nombre).join(', ')}</strong>.`},
+    {nivel:'', titulo:'Propietario sin asignar', meta:`${sinInfo.length} propiedades`, body:`Pendiente confirmar titularidad: <strong>${sinInfo.map(p => p.nombre).join(', ')}</strong>.`},
+    {nivel:'warn', titulo:'Sólo copia certificada', meta:`${copia.length} propiedades`, body:`Conseguir originales: <strong>${copia.map(p => p.nombre).join(', ')}</strong>.`},
+    {nivel:'info', titulo:'Acción pendiente · Vianney', meta:'Tigres I', body:`Falta firma de escrituras de <strong>Tigres I (La Jarretadera)</strong> · Esc. 11,779 · Olivo Rojo.`},
+    {nivel:'warn', titulo:'Saldo pendiente · Israel', meta:'Mazamitla, Jal.', body:`Faltan por pagar <strong>$200,000</strong>. Escrituras pagadas $182,846. Vianney pagó $309,000 a Ricardo (ISR faltante).`},
+    {nivel:'info', titulo:'Marcela responsable', meta:'Sin info reciente', body:`<strong>Casa Culiacán</strong> y <strong>Terreno La Guerrero (Cd. Obregón)</strong> bajo gestión Marcela. Solicitar reporte de avance.`},
+    {nivel:'info', titulo:'Hipoteca BBVA activa', meta:'El Tigre Náutico', body:`Escrituración en trámite con hipoteca BBVA. Vendida $12M como abono a Tigres III · Gabriel Escoto.`},
+    {nivel:'warn', titulo:'Verificar titularidad', meta:'Cabaña AO', body:`Confirmar con <strong>Magaña</strong> si está a nombre de AO.`},
+    {nivel:'', titulo:'Propiedades USA sin info', meta:'Fontana · Colton', body:`<strong>1 terreno con construcción en Fontana</strong> y <strong>2 terrenos en Colton</strong>. Sin documentación recopilada.`},
+    {nivel:'ok', titulo:'Avalúos recientes', meta:'jul–ago 2025', body:`Casa Zoto Grande <strong>$84.42M</strong> (15 jul 2025) · Plaza Guadalupe <strong>$59.18M</strong> (5 ago 2025).`},
+    {nivel:'info', titulo:'Auditoría interna 2025', meta:'Punta Mita Ostiones', body:`Saldo bajo revisión. Escrituras con reserva de dominio · contraste con audit findings 2025.`},
+    {nivel:'ok', titulo:'Ventas estratégicas', meta:'$32M aplicados', body:`<strong>Patria 675</strong> ($13M → Adriana R.), <strong>López Mateos</strong> ($7M → Tigres III), <strong>El Tigre Náutico</strong> ($12M → Tigres III).`}
+  ];
+
+  document.getElementById('alertGrid').innerHTML = alerts.map(a => `
+    <div class="alert-card ${a.nivel}">
+      <div class="alert-title">${a.titulo}</div>
+      <div class="alert-meta">${a.meta}</div>
+      <div class="alert-body">${a.body}</div>
+    </div>
+  `).join('');
+}
+
+// ========== MODAL FICHA TÉCNICA ==========
+function openModal(id){
+  const p = PROPIEDADES.find(x => x.id === id);
+  if(!p) return;
+  const score = calcScore(p);
+  let scoreClass = '';
+  if(score < 40) scoreClass = 'score-low';
+  else if(score < 70) scoreClass = 'score-mid';
+  const circ = 2 * Math.PI * 38;
+  const offset = circ - (score/100) * circ;
+
+  const tieneAvaluo = p.avaluo;
+  const tieneCosto = p.costo !== null && p.costo > 0;
+  let plusvalia = '';
+  if(tieneAvaluo && tieneCosto){
+    const pct = ((p.avaluo - p.costo) / p.costo * 100).toFixed(2);
+    const dif = p.avaluo - p.costo;
+    plusvalia = `
+      <div class="modal-section">
+        <div class="modal-section-title">Análisis de Plusvalía</div>
+        <div class="modal-grid">
+          <div class="modal-field"><div class="modal-label">Costo de adquisición</div><div class="modal-value money">${fmt(p.costo)}</div></div>
+          <div class="modal-field"><div class="modal-label">Avalúo vigente</div><div class="modal-value money">${fmt(p.avaluo)}</div></div>
+          <div class="modal-field"><div class="modal-label">Plusvalía bruta</div><div class="modal-value money gain">+${fmt(dif)}</div></div>
+          <div class="modal-field"><div class="modal-label">Variación porcentual</div><div class="modal-value money gain">+${pct}%</div></div>
+        </div>
+      </div>`;
+  } else if(tieneCosto && p.estatus !== 'Vendida'){
+    const proy = p.costo * (1 + PLUSVALIA_PROM);
+    plusvalia = `
+      <div class="modal-section">
+        <div class="modal-section-title">Proyección de Plusvalía (estimada)</div>
+        <div class="modal-grid">
+          <div class="modal-field"><div class="modal-label">Costo de adquisición</div><div class="modal-value money">${fmt(p.costo)}</div></div>
+          <div class="modal-field"><div class="modal-label">Valor proyectado</div><div class="modal-value money">${fmt(proy)}</div></div>
+          <div class="modal-field"><div class="modal-label">Plusvalía estimada</div><div class="modal-value money gain">+${fmt(proy - p.costo)}</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--tx2);margin-top:10px;font-style:italic">* Estimación basada en plusvalía promedio observada (+63.33%) sobre avalúos vigentes del portafolio. Se sugiere avalúo formal.</div>
+      </div>`;
+  }
+
+  let venta = '';
+  if(p.estatus === 'Vendida' && p.venta){
+    const dif = p.venta - p.costo;
+    venta = `
+      <div class="modal-section">
+        <div class="modal-section-title">Operación de Venta</div>
+        <div class="modal-grid">
+          <div class="modal-field"><div class="modal-label">Costo original</div><div class="modal-value money">${fmt(p.costo)}</div></div>
+          <div class="modal-field"><div class="modal-label">Precio de venta</div><div class="modal-value money">${fmt(p.venta)}</div></div>
+          <div class="modal-field"><div class="modal-label">Diferencia</div><div class="modal-value money ${dif>=0?'gain':''}" style="${dif<0?'color:var(--rd)':''}">${dif>=0?'+':''}${fmt(dif)}</div></div>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('modalInner').innerHTML = `
+    <div class="modal-head">
+      <div class="modal-num">Propiedad #${p.id.toString().padStart(2,'0')}${p.escritura ? ' · Escritura ' + p.escritura : ''}</div>
+      <div class="modal-name">${p.nombre}</div>
+      <div class="modal-loc">${p.ubicacion}</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="score-wrap ${scoreClass}">
+          <div class="score-circle">
+            <svg viewBox="0 0 90 90">
+              <circle class="bg" cx="45" cy="45" r="38"/>
+              <circle class="fg" cx="45" cy="45" r="38" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="score-num">${score}</div>
+          </div>
+          <div class="score-detail">
+            <div class="lab">Salud Documental</div>
+            <div class="ttl">${score >= 70 ? 'Documentación sólida' : score >= 40 ? 'Documentación parcial' : 'Atención requerida'}</div>
+            <div class="desc">Score compuesto: escrituras (30) · propietario asignado (20) · costo (15) · avalúo (15) · estatus (10) · observaciones (10).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Información General</div>
+        <div class="modal-grid">
+          <div class="modal-field"><div class="modal-label">Dirección</div><div class="modal-value">${p.direccion}</div></div>
+          <div class="modal-field"><div class="modal-label">Estado / Región</div><div class="modal-value">${p.estado} · ${p.region}</div></div>
+          <div class="modal-field"><div class="modal-label">Superficie</div><div class="modal-value">${fmtSup(p.superficie)}</div></div>
+          <div class="modal-field"><div class="modal-label">Estatus</div><div class="modal-value"><span class="badge ${p.estatus.toLowerCase()}">${p.estatus}</span></div></div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Titularidad y Documentación</div>
+        <div class="modal-grid">
+          <div class="modal-field"><div class="modal-label">Propietario / Registrante</div><div class="modal-value">${p.propietario}</div></div>
+          <div class="modal-field"><div class="modal-label">Tipo de titular</div><div class="modal-value" style="text-transform:capitalize">${p.propietarioTipo === 'sininfo' ? 'Sin asignar' : p.propietarioTipo}</div></div>
+          <div class="modal-field"><div class="modal-label">Documentación</div><div class="modal-value">${p.documentacion}</div></div>
+          <div class="modal-field"><div class="modal-label">Escritura</div><div class="modal-value">${p.escritura || '—'}</div></div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Información Financiera</div>
+        <div class="modal-grid">
+          <div class="modal-field"><div class="modal-label">Costo de adquisición</div><div class="modal-value money">${p.regalo ? 'Regalo' : (p.costo === null ? '—' : fmtFull(p.costo))}</div></div>
+          <div class="modal-field"><div class="modal-label">Avalúo vigente</div><div class="modal-value money">${p.avaluo ? fmtFull(p.avaluo) : '—'}</div></div>
+          ${p.avaluoFecha ? `<div class="modal-field"><div class="modal-label">Fecha del avalúo</div><div class="modal-value">${p.avaluoFecha}</div></div>` : ''}
+        </div>
+      </div>
+
+      ${plusvalia}
+      ${venta}
+
+      ${p.observaciones ? `
+      <div class="modal-section">
+        <div class="modal-section-title">Observaciones</div>
+        <div class="modal-obs">${p.observaciones}</div>
+      </div>` : ''}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+// ========== CHARTS ==========
+function renderCharts(){
+  Chart.defaults.color = '#9a9486';
+  Chart.defaults.font.family = "'Outfit', sans-serif";
+  Chart.defaults.font.size = 10;
+
+  const colors = ['#c8a45e','#e0c188','#7da882','#6e95b8','#c389a8','#d99466','#d97766','#8b6f3d'];
+
+  // 1. Región (horizontal bar - mejor para mostrar disparidad)
+  const regiones = {};
+  PROPIEDADES.forEach(p => {
+    const k = p.estado;
+    if(!regiones[k]) regiones[k] = {monto:0, conCosto:0, total:0};
+    regiones[k].total++;
+    if(p.costo){
+      regiones[k].monto += p.costo;
+      regiones[k].conCosto++;
+    }
+  });
+  // Solo regiones con monto > 0, ordenadas descendente
+  const regsConMonto = Object.entries(regiones)
+    .filter(([k,v]) => v.monto > 0)
+    .sort((a,b) => b[1].monto - a[1].monto);
+  const regsSinMonto = Object.entries(regiones).filter(([k,v]) => v.monto === 0);
+  const totalInv = regsConMonto.reduce((s,[k,v]) => s + v.monto, 0);
+
+  // Paleta gradiente dorada según monto (más intenso = más inversión)
+  const goldPalette = ['#c8a45e','#b8924e','#a88040','#988034','#88702a','#786020'];
+
+  new Chart(document.getElementById('chartRegion'), {
+    type:'bar',
+    data:{
+      labels: regsConMonto.map(([k,v]) => k),
+      datasets:[{
+        data: regsConMonto.map(([k,v]) => v.monto/1000000),
+        backgroundColor: regsConMonto.map((_,i) => goldPalette[i] || '#5a4a30'),
+        borderColor: 'transparent',
+        borderRadius: 4,
+        barThickness: 26
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      layout:{padding:{right:80}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label: c => {
+              const r = regsConMonto[c.dataIndex][1];
+              const pct = (c.parsed.x * 1000000 / totalInv * 100).toFixed(1);
+              return `$${c.parsed.x.toFixed(1)}M (${pct}%) · ${r.conCosto}/${r.total} props`;
+            }
+          },
+          backgroundColor:'rgba(10,10,10,0.95)',
+          borderColor:'#3a3022',
+          borderWidth:1,
+          titleFont:{family:"'Cormorant Garamond'",size:14},
+          bodyFont:{size:11}
+        },
+        // Plugin custom para mostrar valor al final de cada barra
+        datalabels: false
+      },
+      scales:{
+        x:{
+          beginAtZero:true,
+          grid:{color:'rgba(200,164,94,0.06)',drawBorder:false},
+          ticks:{
+            color:'#9a9486',
+            font:{size:10},
+            callback: v => '$' + v + 'M'
+          }
+        },
+        y:{
+          grid:{display:false},
+          ticks:{
+            color:'#e0c188',
+            font:{family:"'Cormorant Garamond'",size:13}
+          }
+        }
+      },
+      animation:{duration:1200,easing:'easeOutQuart'}
+    },
+    plugins:[{
+      id:'valueLabel',
+      afterDatasetDraw(chart){
+        const {ctx, scales:{x}} = chart;
+        chart.data.datasets[0].data.forEach((value, i) => {
+          const meta = chart.getDatasetMeta(0).data[i];
+          if(!meta) return;
+          const pct = (value * 1000000 / totalInv * 100).toFixed(1);
+          ctx.save();
+          ctx.fillStyle = '#e0c188';
+          ctx.font = "13px 'Cormorant Garamond'";
+          ctx.textBaseline = 'middle';
+          ctx.fillText(`$${value.toFixed(1)}M`, meta.x + 8, meta.y);
+          ctx.fillStyle = '#9a9486';
+          ctx.font = "10px Outfit";
+          ctx.fillText(`${pct}%`, meta.x + 8, meta.y + 14);
+          ctx.restore();
+        });
+      }
+    }]
+  });
+
+  // Mostrar nota de regiones sin monto debajo del chart
+  if(regsSinMonto.length > 0){
+    const note = document.createElement('div');
+    note.style.cssText = 'margin-top:14px;padding:10px 14px;background:rgba(200,164,94,0.04);border-left:2px solid var(--g);border-radius:4px;font-size:10px;letter-spacing:.15em;color:var(--tx2);text-transform:uppercase';
+    const total = regsSinMonto.reduce((s,[k,v]) => s + v.total, 0);
+    note.innerHTML = `<strong style="color:var(--gl);font-family:'Cormorant Garamond';font-size:13px;letter-spacing:.05em;text-transform:none">Sin valor documentado:</strong> ${regsSinMonto.map(([k,v]) => k + ' (' + v.total + ')').join(' · ')} — ${total} propiedades`;
+    document.getElementById('chartRegion').parentElement.parentElement.appendChild(note);
+  }
+
+  // 2. Docs (donut)
+  const docs = {Escritura:0, 'Copia/Parcial':0, 'Sin docs.':0};
+  PROPIEDADES.forEach(p => {
+    if(p.docTipo === 'escrit') docs['Escritura']++;
+    else if(p.docTipo === 'copia') docs['Copia/Parcial']++;
+    else docs['Sin docs.']++;
+  });
+  new Chart(document.getElementById('chartDocs'), {
+    type:'doughnut',
+    data:{
+      labels:Object.keys(docs),
+      datasets:[{
+        data:Object.values(docs),
+        backgroundColor:['#7da882','#d99466','#d97766'],
+        borderColor:'#0a0a0a',
+        borderWidth:2
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins:{
+        legend:{position:'right', labels:{boxWidth:10, padding:14, font:{size:11}}}
+      }
+    }
+  });
+
+  // 3. Top 8 (bar horizontal)
+  const top = [...PROPIEDADES].filter(p => p.costo).sort((a,b) => b.costo - a.costo).slice(0,8);
+  new Chart(document.getElementById('chartTop'), {
+    type:'bar',
+    data:{
+      labels:top.map(p => p.nombre.length > 26 ? p.nombre.substring(0,24) + '...' : p.nombre),
+      datasets:[{
+        label:'Inversión (MXN)',
+        data:top.map(p => p.costo/1000000),
+        backgroundColor:'rgba(200,164,94,0.65)',
+        borderColor:'#c8a45e',
+        borderWidth:1,
+        borderRadius:4
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c => '$' + c.parsed.x.toFixed(2) + 'M'}}
+      },
+      scales:{
+        x:{grid:{color:'rgba(200,164,94,0.06)'}, ticks:{callback:v => '$' + v + 'M'}},
+        y:{grid:{display:false}, ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  // 4. Owners (bar)
+  const owners = {};
+  PROPIEDADES.forEach(p => owners[p.propietario] = (owners[p.propietario] || 0) + 1);
+  const ordOwn = Object.entries(owners).sort((a,b) => b[1] - a[1]);
+  new Chart(document.getElementById('chartOwners'), {
+    type:'bar',
+    data:{
+      labels:ordOwn.map(o => o[0].length > 24 ? o[0].substring(0,22) + '...' : o[0]),
+      datasets:[{
+        label:'Propiedades',
+        data:ordOwn.map(o => o[1]),
+        backgroundColor:ordOwn.map((_,i) => colors[i % colors.length] + 'aa'),
+        borderColor:ordOwn.map((_,i) => colors[i % colors.length]),
+        borderWidth:1,
+        borderRadius:4
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:'rgba(200,164,94,0.06)'}, ticks:{stepSize:1}},
+        y:{grid:{display:false}, ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  // 5. Ciudad
+  const ciudades = {};
+  PROPIEDADES.forEach(p => {
+    if(p.costo) ciudades[p.region] = (ciudades[p.region] || 0) + p.costo;
+  });
+  const ordCiu = Object.entries(ciudades).sort((a,b) => b[1] - a[1]);
+  new Chart(document.getElementById('chartCiudad'), {
+    type:'bar',
+    data:{
+      labels:ordCiu.map(c => c[0]),
+      datasets:[{
+        label:'Inversión (MXN)',
+        data:ordCiu.map(c => c[1]/1000000),
+        backgroundColor:'rgba(200,164,94,0.55)',
+        borderColor:'#c8a45e',
+        borderWidth:1,
+        borderRadius:4
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c => '$' + c.parsed.y.toFixed(2) + 'M'}}
+      },
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{size:10}, maxRotation:30, minRotation:0}},
+        y:{grid:{color:'rgba(200,164,94,0.06)'}, ticks:{callback:v => '$' + v + 'M'}}
+      }
+    }
+  });
+
+  // 6. Concentración
+  const concen = {};
+  PROPIEDADES.forEach(p => {
+    if(p.costo) concen[p.propietario] = (concen[p.propietario] || 0) + p.costo;
+  });
+  const ordCon = Object.entries(concen).sort((a,b) => b[1] - a[1]);
+  new Chart(document.getElementById('chartConcen'), {
+    type:'bar',
+    data:{
+      labels:ordCon.map(c => c[0].length > 24 ? c[0].substring(0,22) + '...' : c[0]),
+      datasets:[{
+        label:'Inversión (MXN)',
+        data:ordCon.map(c => c[1]/1000000),
+        backgroundColor:ordCon.map((_,i) => colors[i % colors.length] + 'aa'),
+        borderColor:ordCon.map((_,i) => colors[i % colors.length]),
+        borderWidth:1,
+        borderRadius:4
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c => '$' + c.parsed.x.toFixed(2) + 'M'}}
+      },
+      scales:{
+        x:{grid:{color:'rgba(200,164,94,0.06)'}, ticks:{callback:v => '$' + v + 'M'}},
+        y:{grid:{display:false}, ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  // 7. Plusvalía proyectada
+  const plusData = PROPIEDADES.filter(p => p.costo > 0 && p.estatus !== 'Vendida').sort((a,b) => b.costo - a.costo).slice(0,12);
+  new Chart(document.getElementById('chartPlus'), {
+    type:'bar',
+    data:{
+      labels:plusData.map(p => p.nombre.length > 22 ? p.nombre.substring(0,20) + '...' : p.nombre),
+      datasets:[
+        {
+          label:'Inversión',
+          data:plusData.map(p => p.costo/1000000),
+          backgroundColor:'rgba(200,164,94,0.45)',
+          borderColor:'#c8a45e',
+          borderWidth:1,
+          borderRadius:4
+        },
+        {
+          label:'Valor proyectado (+63.33%)',
+          data:plusData.map(p => p.avaluo ? p.avaluo/1000000 : (p.costo * (1 + PLUSVALIA_PROM))/1000000),
+          backgroundColor:'rgba(125,168,130,0.4)',
+          borderColor:'#7da882',
+          borderWidth:1,
+          borderRadius:4
+        }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top', labels:{boxWidth:12, padding:14, font:{size:10}, color:'#9a9486'}},
+        tooltip:{callbacks:{label:c => c.dataset.label + ': $' + c.parsed.y.toFixed(2) + 'M'}}
+      },
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{size:9}, maxRotation:45, minRotation:30}},
+        y:{grid:{color:'rgba(200,164,94,0.06)'}, ticks:{callback:v => '$' + v + 'M'}}
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
