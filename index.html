@@ -745,7 +745,7 @@ tbody tr{cursor:pointer}
         <div class="plus-label">Plusvalía promedio observada</div>
         <div class="plus-big gr" id="plusAvg">+63.33<span class="small">%</span></div>
         <div class="plus-detail">
-          Calculada sobre las dos propiedades con avalúo vigente (julio–agosto 2025) <strong>Casa Zoto Grande</strong> y <strong>Plaza Guadalupe</strong>. Estos avalúos representan el incremento de valor real sobre el costo de adquisición documentado.
+          Calculada sobre las dos propiedades con avalúo vigente (julio–agosto 2025) <strong>Casa Zoto Grande</strong> y <strong>Oficinas Perilupe</strong>. Estos avalúos representan el incremento de valor real sobre el costo de adquisición documentado.
         </div>
         <div class="plus-comp-grid">
           <div class="plus-comp">
@@ -756,7 +756,7 @@ tbody tr{cursor:pointer}
             <div class="delta">+ 68.85% · jul 2025</div>
           </div>
           <div class="plus-comp">
-            <div class="ttl">Plaza Guadalupe</div>
+            <div class="ttl">Oficinas Perilupe</div>
             <div class="va">$37.50M</div>
             <div class="ar">↓</div>
             <div class="vb">$59.18M</div>
@@ -891,7 +891,7 @@ tbody tr{cursor:pointer}
 const PROPIEDADES = [
   {id:1, nombre:"Casa Zoto Grande", escritura:"36,374", direccion:"Av. Acueducto 5300, Lote 88, Cond. Zoto Grande Residencial", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:902.41, costo:50000000, avaluo:84424010, avaluoFecha:"15 jul 2025", documentacion:"Escrituras Completas", docTipo:"escrit", propietario:"José Alfredo Olivas Rojas", propietarioTipo:"persona", observaciones:"Contrato mutuo privado", estatus:"Activa"},
   {id:2, nombre:"Puerta Las Lomas", escritura:"346", direccion:"Av. Universidad 32, Cond. Puerta Las Lomas", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:395.18, costo:5530306, avaluo:null, documentacion:"Sólo copia certificada del RPP", docTipo:"copia", propietario:"Lorely Guadalupe Vivian Flores y AO", propietarioTipo:"mixto", observaciones:"Conseguir escritura con notario · Arqui Alonso sin info", estatus:"Pendiente"},
-  {id:3, nombre:"Plaza Guadalupe", escritura:"39923 y 40,143", direccion:"Anillo Periférico 511, Frac. Resid. Plaza Guadalupe", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:2159.16, costo:37500000, avaluo:59183000, avaluoFecha:"5 ago 2025", documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"$17.5M efectivo + $20M transferencia · Construcción ¿?", estatus:"Activa"},
+  {id:3, nombre:"Oficinas Perilupe", escritura:"39923 y 40,143", direccion:"Anillo Periférico 511, Frac. Resid. Plaza Guadalupe", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:2159.16, costo:37500000, avaluo:59183000, avaluoFecha:"5 ago 2025", documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"$17.5M efectivo + $20M transferencia · Construcción ¿?", estatus:"Activa"},
   {id:4, nombre:"Terreno Federalismo", escritura:"81,832", direccion:"Federalismo 1000", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:36637.93, costo:180000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
   {id:5, nombre:"Casa El Ranchito Ejidal", escritura:null, direccion:"Casa Ejidal", ubicacion:"Cajititlán, Jal.", estado:"Jalisco", region:"Cajititlán", superficie:null, costo:null, avaluo:null, documentacion:"Recibo CFE · faltan documentos del ejido", docTipo:"copia", propietario:"Vianney Peregrina Rodriguez", propietarioTipo:"persona", observaciones:"Regalo a AO · faltan documentos originales del ejido", estatus:"Activa", regalo:true},
   {id:6, nombre:"Terreno Israel (El Zapatero)", escritura:"13,934", direccion:"Puerta El Zapatero (Aguacates)", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:4000000, avaluo:null, documentacion:"4 transferencias por $182,846 c/u para escrituras · Vianney pagó $309,000 a Ricardo (ISR faltante)", docTipo:"escrit", propietario:"Alanya Residences", propietarioTipo:"empresa", observaciones:"$2M efectivo a Antonio + $1.8M transferencias · Faltan por pagar $200,000", estatus:"Pendiente"},
@@ -1345,7 +1345,7 @@ function renderAlertas(){
     {nivel:'info', titulo:'Hipoteca BBVA activa', meta:'El Tigre Náutico', body:`Escrituración en trámite con hipoteca BBVA. Vendida $12M como abono a Tigres III · Gabriel Escoto.`},
     {nivel:'warn', titulo:'Verificar titularidad', meta:'Cabaña AO', body:`Confirmar con <strong>Magaña</strong> si está a nombre de AO.`},
     {nivel:'', titulo:'Propiedades USA sin info', meta:'Fontana · Colton', body:`<strong>1 terreno con construcción en Fontana</strong> y <strong>2 terrenos en Colton</strong>. Sin documentación recopilada.`},
-    {nivel:'ok', titulo:'Avalúos recientes', meta:'jul–ago 2025', body:`Casa Zoto Grande <strong>$84.42M</strong> (15 jul 2025) · Plaza Guadalupe <strong>$59.18M</strong> (5 ago 2025).`},
+    {nivel:'ok', titulo:'Avalúos recientes', meta:'jul–ago 2025', body:`Casa Zoto Grande <strong>$84.42M</strong> (15 jul 2025) · Oficinas Perilupe <strong>$59.18M</strong> (5 ago 2025).`},
     {nivel:'info', titulo:'Auditoría interna 2025', meta:'Punta Mita Ostiones', body:`Saldo bajo revisión. Escrituras con reserva de dominio · contraste con audit findings 2025.`},
     {nivel:'ok', titulo:'Ventas estratégicas', meta:'$32M aplicados', body:`<strong>Patria 675</strong> ($13M → Adriana R.), <strong>López Mateos</strong> ($7M → Tigres III), <strong>El Tigre Náutico</strong> ($12M → Tigres III).`}
   ];
