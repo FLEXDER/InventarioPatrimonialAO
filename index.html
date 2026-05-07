@@ -368,6 +368,19 @@ tbody tr{cursor:pointer}
 .plus-comp .ar{font-size:18px;color:var(--gr);margin:6px 0}
 .plus-comp .vb{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gl);font-weight:400}
 .plus-comp .delta{font-size:11px;color:var(--gr);letter-spacing:.2em;text-transform:uppercase;margin-top:8px;font-weight:500}
+.plus-method{background:linear-gradient(135deg,rgba(200,164,94,0.06),rgba(200,164,94,0.02));border:1px solid var(--bd);border-left:3px solid var(--g);border-radius:8px;padding:24px 28px;margin-bottom:28px;position:relative}
+.plus-method-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.plus-method-badge{font-size:9px;letter-spacing:.4em;color:var(--g);text-transform:uppercase;padding:5px 10px;border:1px solid var(--g);border-radius:4px;background:rgba(200,164,94,0.05);font-weight:500}
+.plus-method-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gl);font-weight:500;letter-spacing:.02em}
+.plus-method-body{font-size:13px;color:var(--tx);line-height:1.75}
+.plus-method-body strong{color:var(--gl);font-weight:500}
+.plus-method-formula{display:inline-block;font-family:'Courier New',monospace;font-size:12px;color:var(--g);background:rgba(0,0,0,0.35);padding:4px 10px;border-radius:4px;border:1px solid var(--bd);margin:0 2px}
+.plus-method-list{margin:14px 0 6px 0;padding:0;list-style:none}
+.plus-method-list li{font-size:12.5px;color:var(--tx2);line-height:1.7;padding:6px 0 6px 22px;position:relative}
+.plus-method-list li::before{content:'·';position:absolute;left:8px;top:5px;color:var(--g);font-size:18px;font-weight:700}
+.plus-method-list li strong{color:var(--tx)}
+.plus-method-foot{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(200,164,94,0.18);font-size:11.5px;color:var(--tx2);font-style:italic;line-height:1.6}
+.plus-method-foot strong{color:var(--g);font-style:normal}
 
 /* ========== PRINT ========== */
 @media print{
@@ -471,7 +484,7 @@ tbody tr{cursor:pointer}
       <div class="kpi">
         <div class="kpi-label">Total propiedades</div>
         <div class="kpi-value">26</div>
-        <div class="kpi-detail" id="kpiTotalDetail">Activas <span class="pos">11</span> · Pendientes <span>12</span> · Vendidas <span>3</span></div>
+        <div class="kpi-detail" id="kpiTotalDetail">Activas <span class="pos">11</span> · Vendidas <span>3</span></div>
       </div>
       <div class="kpi">
         <div class="kpi-label">Inversión documentada</div>
@@ -740,6 +753,26 @@ tbody tr{cursor:pointer}
     <h2 class="section-title">Análisis de Plusvalía</h2>
     <p class="section-sub">Avalúos vigentes · Proyección de portafolio</p>
 
+    <div class="plus-method">
+      <div class="plus-method-header">
+        <span class="plus-method-badge">Metodología</span>
+        <span class="plus-method-title">Cómo se calcula esta proyección</span>
+      </div>
+      <div class="plus-method-body">
+        El <strong>+63.33%</strong> es la <strong>plusvalía promedio observada</strong> de las dos únicas propiedades del portafolio con avalúo formal vigente: <strong>Casa Zoto Grande</strong> (jul 2025, +68.85%) y <strong>Oficinas Perilupe</strong> (ago 2025, +57.81%). Para cada propiedad se aplica la fórmula <span class="plus-method-formula">(avalúo − costo) ÷ costo</span> y se promedian los dos resultados.
+
+        <ul class="plus-method-list">
+          <li><strong>Avalúos formales:</strong> documentos emitidos por perito valuador certificado · costo y avalúo respaldados con escrituras y comprobantes notariales.</li>
+          <li><strong>Proyección al portafolio:</strong> a las propiedades activas con costo documentado pero sin avalúo formal se les aplica <span class="plus-method-formula">costo × 1.6333</span> como estimación direccional.</li>
+          <li><strong>Las propiedades con avalúo vigente</strong> usan su avalúo real, no la proyección.</li>
+        </ul>
+
+        <div class="plus-method-foot">
+          <strong>Aviso · </strong>Esta es una <strong>estimación, no una valuación.</strong> La muestra es pequeña (2 propiedades) y ambas son urbanas en Zapopan, por lo que el resultado puede sobreestimar la plusvalía real de terrenos rurales en Sinaloa, Sonora o Nayarit. Para sustentar conversaciones formales de patrimonio, sucesión o financiamiento, se recomienda <strong>avalúo formal sobre las propiedades de mayor valor</strong> (Marzielo Residences, Olivo Rojo, Tigres, Sams, USA).
+        </div>
+      </div>
+    </div>
+
     <div class="plus-hero">
       <div class="plus-card">
         <div class="plus-label">Plusvalía promedio observada</div>
@@ -890,29 +923,29 @@ tbody tr{cursor:pointer}
 // ========== DATOS ==========
 const PROPIEDADES = [
   {id:1, nombre:"Casa Zoto Grande", escritura:"36,374", direccion:"Av. Acueducto 5300, Lote 88, Cond. Zoto Grande Residencial", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:902.41, costo:50000000, avaluo:84424010, avaluoFecha:"15 jul 2025", documentacion:"Escrituras Completas", docTipo:"escrit", propietario:"José Alfredo Olivas Rojas", propietarioTipo:"persona", observaciones:"Contrato mutuo privado", estatus:"Activa"},
-  {id:2, nombre:"Puerta Las Lomas", escritura:"346", direccion:"Av. Universidad 32, Cond. Puerta Las Lomas", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:395.18, costo:5530306, avaluo:null, documentacion:"Sólo copia certificada del RPP", docTipo:"copia", propietario:"Lorely Guadalupe Vivian Flores y AO", propietarioTipo:"mixto", observaciones:"Conseguir escritura con notario · Arqui Alonso sin info", estatus:"Pendiente"},
+  {id:2, nombre:"Puerta Las Lomas", escritura:"346", direccion:"Av. Universidad 32, Cond. Puerta Las Lomas", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:395.18, costo:5530306, avaluo:null, documentacion:"Sólo copia certificada del RPP", docTipo:"copia", propietario:"Lorely Guadalupe Vivian Flores", propietarioTipo:"mixto", observaciones:"Co-titularidad con AO · Conseguir escritura con notario · Arqui Alonso sin info", estatus:"Pendiente"},
   {id:3, nombre:"Oficinas Perilupe", escritura:"39923 y 40,143", direccion:"Anillo Periférico 511, Frac. Resid. Plaza Guadalupe", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:2159.16, costo:37500000, avaluo:59183000, avaluoFecha:"5 ago 2025", documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"$17.5M efectivo + $20M transferencia · Construcción ¿?", estatus:"Activa"},
   {id:4, nombre:"Terreno Federalismo", escritura:"81,832", direccion:"Federalismo 1000", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:36637.93, costo:180000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
   {id:5, nombre:"Casa El Ranchito Ejidal", escritura:null, direccion:"Casa Ejidal", ubicacion:"Cajititlán, Jal.", estado:"Jalisco", region:"Cajititlán", superficie:null, costo:null, avaluo:null, documentacion:"Recibo CFE · faltan documentos del ejido", docTipo:"copia", propietario:"Vianney Peregrina Rodriguez", propietarioTipo:"persona", observaciones:"Regalo a AO · faltan documentos originales del ejido", estatus:"Activa", regalo:true},
-  {id:6, nombre:"Terreno Israel (El Zapatero)", escritura:"13,934", direccion:"Puerta El Zapatero (Aguacates)", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:4000000, avaluo:null, documentacion:"4 transferencias por $182,846 c/u para escrituras · Vianney pagó $309,000 a Ricardo (ISR faltante)", docTipo:"escrit", propietario:"Alanya Residences", propietarioTipo:"empresa", observaciones:"$2M efectivo a Antonio + $1.8M transferencias · Faltan por pagar $200,000", estatus:"Pendiente"},
-  {id:7, nombre:"Casa La Loma", escritura:null, direccion:"La arregló Alejo", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:null, avaluo:null, documentacion:"No se sabe quién tiene los papeles", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Pendiente · documentación extraviada", estatus:"Pendiente"},
-  {id:8, nombre:"Cabaña AO", escritura:null, direccion:"Cabaña", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:null, avaluo:null, documentacion:"Verificar con Magaña", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Confirmar si está a nombre de AO", estatus:"Pendiente"},
-  {id:9, nombre:"Casa compra a Alejo (oct 2022)", escritura:null, direccion:"Casa", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:570000, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Compra octubre 2022", estatus:"Pendiente"},
+  {id:6, nombre:"Terreno Israel (El Zapatero)", escritura:"13,934", direccion:"Puerta El Zapatero (Aguacates)", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:4000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Alanya Residences", propietarioTipo:"empresa", observaciones:"$2M efectivo a Antonio + $1.8M transferencias · Pago liquidado", estatus:"Activa"},
+  {id:7, nombre:"Casa La Loma", escritura:null, direccion:"La arregló Alejo", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:null, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Escriturada y pagada", estatus:"Activa"},
+  {id:8, nombre:"Cabaña AO", escritura:null, direccion:"Cabaña", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:null, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Escriturada y pagada", estatus:"Activa"},
+  {id:9, nombre:"Casa compra a Alejo (oct 2022)", escritura:null, direccion:"Casa", ubicacion:"Mazamitla, Jal.", estado:"Jalisco", region:"Mazamitla", superficie:null, costo:570000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Compra octubre 2022 · Escriturada y pagada", estatus:"Activa"},
   {id:10, nombre:"Los Pinitos", escritura:"37,279", direccion:"Prolongación Priv. del Perpetuo Socorro 777", ubicacion:"San José de Gracia, Mich.", estado:"Michoacán", region:"San José de Gracia", superficie:460, costo:3000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
   {id:11, nombre:"Casa Culiacán (Sra. Marcela)", escritura:null, direccion:"Casa", ubicacion:"Culiacán, Sin.", estado:"Sinaloa", region:"Culiacán", superficie:null, costo:null, avaluo:null, documentacion:"Sin documentos · sólo hay un evalúo", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Marcela se encarga · sin información", estatus:"Pendiente"},
   {id:12, nombre:"Terreno La Guerrero", escritura:null, direccion:"Terreno", ubicacion:"Cd. Obregón, Son.", estado:"Sonora", region:"Cd. Obregón", superficie:null, costo:null, avaluo:null, documentacion:"No se ha podido arreglar la escritura", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Marcela se encarga · sin información", estatus:"Pendiente"},
   {id:13, nombre:"Punta Mita Punta Burro", escritura:null, direccion:"Ejido Higuera Blanca, Punta Burro", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:null, costo:14000000, avaluo:null, documentacion:"No hay nada", docTipo:"no-doc", propietario:"Lorely Guadalupe Vivian Flores", propietarioTipo:"persona", observaciones:"Pago 1 · lo arregla Jaziel", estatus:"Pendiente"},
   {id:14, nombre:"Punta Mita Ostiones", escritura:null, direccion:"Ejido Higuera Blanca", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:null, costo:51000000, avaluo:null, documentacion:"Escrituras con reserva de dominio", docTipo:"escrit", propietario:"Sin asignar", propietarioTipo:"sininfo", observaciones:"", estatus:"Activa"},
-  {id:15, nombre:"Tigres I (La Jarretadera)", escritura:"11,779", direccion:"Fracción B1 del Ejido, Marzielo", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:1160.51, costo:48550000, avaluo:null, documentacion:"Falta firma de Vianney", docTipo:"copia", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Escrituras pendientes de firmar", estatus:"Pendiente"},
-  {id:16, nombre:"Tigres II (junto Marzielo)", escritura:null, direccion:"Junto a Marzielo", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:70000000, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
-  {id:17, nombre:"Tigres III", escritura:null, direccion:"Tigres III", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:74000000, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
+  {id:15, nombre:"Tigres I (La Jarretadera)", escritura:"11,779", direccion:"Fracción B1 del Ejido, Marzielo", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:1160.51, costo:48550000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Escrituras formalizadas", estatus:"Activa"},
+  {id:16, nombre:"Tigres II (junto Marzielo)", escritura:null, direccion:"Junto a Marzielo", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:70000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
+  {id:17, nombre:"Tigres III", escritura:null, direccion:"Tigres III", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:74000000, avaluo:null, documentacion:"Escrituras", docTipo:"escrit", propietario:"Marzielo Residences", propietarioTipo:"empresa", observaciones:"", estatus:"Activa"},
   {id:18, nombre:"Sams Hermanas (Parcela 174)", escritura:"11,768", direccion:"Parcela 174 Z1, Ejido Bucerías", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:13863.61, costo:50000000, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"$30M transferencia + $20M efectivo (1 ha 38 áreas 63.61 m²)", estatus:"Activa"},
   {id:19, nombre:"Sams Roque (Fracción 3)", escritura:"11,071", direccion:"Carretera Federal 200, Mezcales", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:5580.75, costo:41123287, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Costo registrado incluye ambas fracciones (3 y 4)", estatus:"Activa"},
   {id:20, nombre:"Sams Roque (Fracción 4)", escritura:"11,072", direccion:"Carretera Federal 200, Mezcales", ubicacion:"Bahía de Banderas, Nay.", estado:"Nayarit", region:"Bahía de Banderas", superficie:437.29, costo:null, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Costo combinado con Fracción 3 ($41,123,287 por ambas)", estatus:"Activa"},
   {id:21, nombre:"Terreno Fontana (con construcción)", escritura:null, direccion:"Fontana", ubicacion:"USA", estado:"USA", region:"Fontana, CA", superficie:null, costo:null, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"1 terreno con construcción", estatus:"Pendiente"},
   {id:22, nombre:"2 Terrenos en Colton", escritura:null, direccion:"Colton", ubicacion:"USA", estado:"USA", region:"Colton, CA", superficie:null, costo:null, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"2 lotes", estatus:"Pendiente"},
   {id:23, nombre:"Patria 675 (Jardines Universidad)", escritura:"17,842", direccion:"Av. Patria 675, Frac. Jardines Universidad", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:406.82, costo:14000000, avaluo:null, documentacion:"Escritura", docTipo:"escrit", propietario:"Olivo Rojo", propietarioTipo:"empresa", observaciones:"Vendida $13M · abono adeudo Adriana Rodríguez", estatus:"Vendida", venta:13000000},
-  {id:24, nombre:"López Mateos (Lote 8)", escritura:"18,406", direccion:"Fracción B Lote 8, Ejido Santa Ana Tepetitlán", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:420, costo:2800000, avaluo:null, documentacion:"Sólo copia · se puede conseguir original", docTipo:"copia", propietario:"José Alfredo Olivas Rojas (rep. por Emanuel Alonso)", propietarioTipo:"persona", observaciones:"Vendida $7M · abono a compra Tigres III", estatus:"Vendida", venta:7000000},
+  {id:24, nombre:"López Mateos (Lote 8)", escritura:"18,406", direccion:"Fracción B Lote 8, Ejido Santa Ana Tepetitlán", ubicacion:"Zapopan, Jal.", estado:"Jalisco", region:"Zapopan", superficie:420, costo:2800000, avaluo:null, documentacion:"Sólo copia · se puede conseguir original", docTipo:"copia", propietario:"José Alfredo Olivas Rojas", propietarioTipo:"persona", observaciones:"Representado por Emanuel Alonso · Vendida $7M · abono a compra Tigres III", estatus:"Vendida", venta:7000000},
   {id:25, nombre:"Casa El Tigre Náutico", escritura:null, direccion:"Frac. El Tigre Náutico", ubicacion:"Nuevo Vallarta, Nay.", estado:"Nayarit", region:"Nuevo Vallarta", superficie:null, costo:9900000, avaluo:null, documentacion:"En trámite con hipoteca BBVA", docTipo:"copia", propietario:"José Alfredo Olivas Rojas", propietarioTipo:"persona", observaciones:"Vendida $12M · abono Tigres III · Gabriel Escoto", estatus:"Vendida", venta:12000000},
   {id:26, nombre:"Terreno con Portón", escritura:null, direccion:"Los Olivos", ubicacion:"Los Olivos, Jal.", estado:"Jalisco", region:"Los Olivos", superficie:null, costo:null, avaluo:null, documentacion:"Sin información", docTipo:"no-doc", propietario:"Sin información", propietarioTipo:"sininfo", observaciones:"Última visita antes de pandemia", estatus:"Pendiente"}
 ];
@@ -1158,7 +1191,7 @@ function renderKpiExtras(){
   const pendientes = PROPIEDADES.filter(p => p.estatus === 'Pendiente').length;
   const vendidas = PROPIEDADES.filter(p => p.estatus === 'Vendida').length;
   const elTotalDetail = document.getElementById('kpiTotalDetail');
-  if(elTotalDetail) elTotalDetail.innerHTML = `Activas <span class="pos">${activas}</span> · Pendientes <span>${pendientes}</span> · Vendidas <span>${vendidas}</span>`;
+  if(elTotalDetail) elTotalDetail.innerHTML = `Activas <span class="pos">${activas}</span> · Vendidas <span>${vendidas}</span>`;
 
   // KPI Inversión documentada total
   const invTotal = PROPIEDADES.reduce((a,p) => a + (p.costo || 0), 0);
